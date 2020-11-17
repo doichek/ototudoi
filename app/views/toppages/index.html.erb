@@ -1,0 +1,11 @@
+<% if logged_in? %>
+  <%= link_to 'コミュニティ一覧へ', topics_path, class: 'btn btn-lg btn-success' %>
+  
+<% else %>
+  <div class="center jumbotron">
+    <div class="text-center">
+      <h1>Welcome to the Ototudoi</h1>
+      <%= link_to 'Sign up now!', signup_path, class: 'btn btn-lg btn-primary' %>
+    </div>
+  </div>
+<% end %>
