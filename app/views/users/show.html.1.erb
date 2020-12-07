@@ -1,0 +1,35 @@
+<div class="row">
+  <aside class="col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><%= @user.name %></h3>
+      </div>
+      <div class="card-body">
+        <img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
+      </div>
+    </div>
+    <%= render 'relationships/follow_button', user: @user %>
+    <% if current_user == @user %>
+      <%= link_to "プロフィール編集", edit_profile_user_path, class: 'btn  btn-block rounded-pill mt-2', :style => "background-color:#f4623a; color:white;"  %> 
+      <%= link_to "アカウント編集", edit_account_user_path, class: 'btn  btn-block rounded-pill', :style => "background-color:#f4623a; color:white;"  %> 
+    <% end %>
+  </aside>
+
+  <div class="col-sm-8">
+    <ul class="nav nav-tabs nav-justified mb-3">
+      <li class="nav-item"><a href="<%= user_path(@user) %>" class="nav-link <%= 'active' if current_page?(user_path(@user)) %>">プロフィール </a></li>
+      <li class="nav-item"><a href="<%= followings_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followings_user_path(@user)) %>">フォロー  <span class="badge badge-secondary"><%= @count_followings %></span></a></li>
+      <li class="nav-item"><a href="<%= followers_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followers_user_path(@user)) %>">フォロワー  <span class="badge badge-secondary"><%= @count_followers %></span></a></li>
+    </ul>
+    
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">自己紹介</h3>
+      </div>
+      <div class="card-body">
+          <%= @user.content %>    
+      </div>
+    </div>
+  </div>
+</div>
+

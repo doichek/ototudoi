@@ -58,5 +58,5 @@ gem 'pry-byebug', group: :development
 #画像アップロード
 gem 'carrierwave'
 
-#画像の加工とか
-#gem 'rmagick'
+# #画像の加工とか
+# gem 'rmagick'

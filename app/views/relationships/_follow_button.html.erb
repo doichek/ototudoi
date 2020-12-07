@@ -1,13 +1,13 @@
 <% unless current_user == user %>
   <% if current_user.following?(user) %>
-    <%= form_with(model: current_user.relationships.find_by(follow_id: user.id), local: true, method: :delete) do |f| %>
+    <%= form_with(model: current_user.relationships.find_by(follow_id: user.id), local: true, method: :delete, :class => "d-inline") do |f| %>
       <%= hidden_field_tag :follow_id, user.id %>
-      <%= f.submit 'Unfollow', class: 'btn btn-danger btn-block' %>
+      <%= f.submit 'アンフォロー', class: 'btn btn-danger rounded-pill', :style => "float: right;"%>
     <% end %>
   <% else %>
-    <%= form_with(model: current_user.relationships.build, local: true) do |f| %>
+    <%= form_with(model: current_user.relationships.build, local: true, :class => "d-inline") do |f| %>
       <%= hidden_field_tag :follow_id, user.id %>
-      <%= f.submit 'Follow', class: 'btn btn-primary btn-block' %>
+      <%= f.submit 'フォロー', class: 'btn btn-primary rounded-pill', :style => "float: right;" %>
     <% end %>
   <% end %>
 <% end %>

@@ -1,0 +1,171 @@
+.balloon {
+position: relative;
+background-color: #ffc4c4;
+padding: 10px;
+color: #333;
+margin: 15px;
+width:85%;
+border-radius:5px;
+}
+
+.balloon::before {
+content: "";
+position: absolute;
+border: 12px solid transparent;
+border-right: 12px solid #ffc4c4;
+top: 20%;
+left: -24px;
+}
+
+.balloon p {
+margin: 0;
+padding: 0;
+}
+
+
+
+.wakumoji{
+    position: relative;
+}
+
+.wakumoji::before {
+    content: '\f0c0';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    background-color: #f4f4f4;
+    left: 24px;
+    top: -12px;
+}
+
+.wakumoji::after{
+    content: "コミュニティ作成";
+    font-weight: bold;
+    position: absolute;
+    background-color: #f4f4f4;
+    color: #033;
+    left: 44px;
+    top: -12px;
+    font-size:15px;
+}
+
+
+
+.wakumoji2{
+    position: relative;
+}
+
+.wakumoji2::before{
+    content: '\f002';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    background-color: #f4f4f4;
+    left: 24px;
+    top: -12px;
+}
+
+.wakumoji2::after{
+    content: "検索";
+    font-weight: bold;
+    position: absolute;
+    background-color: #f4f4f4;
+    color: #033;
+    left: 40px;
+    top: -12px;
+    font-size:15px;
+}
+
+
+.subtitle{
+/*background: rgb(255,255,255);*/
+/*background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(244,98,58,1) 59%);*/
+/*-webkit-background-clip: text;*/
+/*color: transparent;*/
+font-weight:bold;
+    
+}
+
+
+.wakumoji3{
+    position: relative;
+}
+
+.wakumoji3::before {
+    content: '\f27a';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    background-color: #f4f4f4;
+    left: 24px;
+    top: -12px;
+}
+
+.wakumoji3::after{
+    content: "投稿";
+    font-weight: bold;
+    position: absolute;
+    background-color: #f4f4f4;
+    color: #033;
+    left: 40px;
+    top: -12px;
+    font-size:15px;
+}
+
+
+.wakumoji4{
+    position: relative;
+}
+
+.wakumoji4::before {
+    content: '\f002';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    background-color: #f4f4f4;
+    left: 24px;
+    top: -12px;
+}
+
+.wakumoji4::after{
+    content: "検索";
+    font-weight: bold;
+    position: absolute;
+    background-color: #f4f4f4;
+    color: #033;
+    left: 40px;
+    top: -12px;
+    font-size:15px;
+}
+/*.fa-link::before {*/
+/*    content: "\f002";*/
+/*    font-weight: 400;*/
+/*    font-family: "FontAwesome";*/
+/*    position: absolute;*/
+/*    left: 20px;*/
+/*    top: -23px;*/
+/*    color: #313131;*/
+/*    font-size: 125%;*/
+/*    padding: 0 3px;*/
+/*}*/
+  
+/*.fa-link::after {*/
+/*  font-family: "Font Awesome 5 Free";*/
+/*  content: "\f107";*/
+
+/*  -webkit-font-smoothing: antialiased;*/
+/*  display: inline-block;*/
+/*  font-style: normal;*/
+/*  font-variant: normal;*/
+/*  text-rendering: auto;*/
+/*  line-height: 1;*/
+/*}*/
+.navstyle1{
+  font-weight:700;
+}
+
+.navstyle2{
+  font-weight:700;
+  font-size: 0.9rem;
+}
+

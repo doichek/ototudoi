@@ -1,0 +1,42 @@
+<h1>レス一覧画面</h1>
+<div class="row">
+  <aside class="col-sm-4">
+    <%= form_with(model: @micropost, local: true) do |f| %>
+      <div class="form-group">
+        <%= f.text_area :content, class: 'form-control', rows: 5 %>
+        <%= f.hidden_field :topic_id, :value => @micropost.topic_id %>
+        <!--↑「@micropost.topic_id」をパラメータとしてmicroposts#CREATEに渡す処理-->
+      </div>
+      <%= f.submit 'Post', class: 'btn btn-primary btn-block' %>
+    <% end %>
+
+  </aside>
+  <div class="col-sm-8">
+      <% @microposts.each do |micropost| %>
+          <div class="balloon5">
+            <div class="faceicon">
+              <img class="mr-2 rounded" src="<%= gravatar_url(micropost.user, { size: 50 }) %>" alt="">
+            </div>
+            <div class="chatting">
+              <div class="says">
+                <div>
+                  <%= link_to micropost.user.name, user_path(micropost.user) %> 
+                  <span class="text-muted">作成日 <%= micropost.created_at.strftime('%Y/%m/%d %H:%M') %></span>
+                  <% if current_user == micropost.user %>
+                   <%= link_to micropost, :method => :delete , data: { confirm: "本当に削除しますか?" }, class: 'btn btn-danger btn-sm p-0' do %>
+                     <i class="fas fa-trash-alt"></i>
+                    <% end %>
+                  <% end %>
+                </div>
+                <div>
+                  <p class="mb-0"><%= micropost.content %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+      <% end %>
+      <%= paginate @microposts %>
+    </ul>
+    
+  </div>
+</div>

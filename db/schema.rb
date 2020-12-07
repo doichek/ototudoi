@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_16_234806) do
+ActiveRecord::Schema.define(version: 2020_12_01_094506) do
 
   create_table "favorites", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(version: 2020_11_16_234806) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "tag"
+    t.integer "flag"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
 
@@ -56,6 +58,12 @@ ActiveRecord::Schema.define(version: 2020_11_16_234806) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image"
+    t.string "content"
+    t.string "content2"
+    t.string "content3"
+    t.string "content4"
+    t.string "address"
+    t.integer "sex"
   end
 
   add_foreign_key "favorites", "topics"

@@ -6,37 +6,103 @@ class TopicsController < ApplicationController
   def index
     if logged_in?
       @topic = current_user.topics.build  # form_with 用
-      @topics = Topic.order(id: :desc).page(params[:page])
+      @topics = Topic.where(flag: nil).order(id: :desc).page(params[:page])
     end
   end
   
-  def search
-    if params[:keyword] == 'new'
-      @topics = Topic.order(id: :desc).page(params[:page])
-      if params[:name].present?
-        @topics = Topic.where('title LIKE ?', "%#{params[:name]}%").order(id: :desc).page(params[:page])
-        if params[:favorite] == "1"
-          @topics = current_user.likes.where('title LIKE ?', "%#{params[:name]}%").order(id: :desc).page(params[:page])
-        end
-      else
-        if params[:favorite] == "1"
-          @topics = current_user.likes.order(id: :desc).page(params[:page])
-        end
-      end
-    else #old
-      @topics = Topic.order(id: :asc).page(params[:page])
-      if params[:name].present?
-        @topics = Topic.where('title LIKE ?', "%#{params[:name]}%").order(id: :asc).page(params[:page])
-        if params[:favorite] == "1"
-          @topics = current_user.likes.where('title LIKE ?', "%#{params[:name]}%").order(id: :asc).page(params[:page])
-        end
-      else
-        if params[:favorite] == "1"
-          @topics = current_user.likes.order(id: :asc).page(params[:page])
-        end
-      end
+  # def search
+  #   @topic = current_user.topics.build
+  #   if params[:keyword] == 'new'
+  #     @topics = Topic.order(id: :desc).page(params[:page])
+  #     if params[:name].present?
+  #       @topics = Topic.where('title LIKE ?', "%#{params[:name]}%").order(id: :desc).page(params[:page])
+  #       if params[:favorite] == "1"
+  #         @topics = current_user.likes.where('title LIKE ?', "%#{params[:name]}%").order(id: :desc).page(params[:page])
+  #       end
+  #     else
+  #       if params[:favorite] == "1"
+  #         @topics = current_user.likes.order(id: :desc).page(params[:page])
+  #       end
+  #     end
+      
+  #   else #old
+  #     @topics = Topic.order(id: :asc).page(params[:page])
+  #     if params[:name].present?
+  #       @topics = Topic.where('title LIKE ?', "%#{params[:name]}%").order(id: :asc).page(params[:page])
+  #       if params[:favorite] == "1"
+  #         @topics = current_user.likes.where('title LIKE ?', "%#{params[:name]}%").order(id: :asc).page(params[:page])
+  #       end
+  #     else
+  #       if params[:favorite] == "1"
+  #         @topics = current_user.likes.order(id: :asc).page(params[:page])
+  #       end
+  #     end
+  #   end
+    
+  # end
+
+
+def search
+    @topic = current_user.topics.build
+    
+    if params[:keyword] == 'new' && !params[:name].present? && params[:favorite] == "0" && params[:tag] == "0"
+      return @topics = Topic.where(flag: nil).order(id: :desc).page(params[:page])
+    elsif params[:keyword] == 'old' && !params[:name].present? && params[:favorite] == "0" && params[:tag] == "0"
+      return @topics = Topic.where(flag: nil).order(id: :asc).page(params[:page])
     end
-  end
+
+
+    if params[:keyword] == 'new' && params[:name].present? && params[:favorite] == "0" && params[:tag] == "0"
+      return @topics = Topic.where(flag: nil).where('title LIKE ?', "%#{params[:name]}%").order(id: :desc).page(params[:page])
+    elsif params[:keyword] == 'old' && params[:name].present? && params[:favorite] == "0" && params[:tag] == "0"
+      return @topics = Topic.where(flag: nil).where('title LIKE ?', "%#{params[:name]}%").order(id: :asc).page(params[:page])
+    end
+    
+    
+    if params[:keyword] == 'new' && params[:name].present? && params[:favorite] == "1" && params[:tag] == "0"
+      return @topics = current_user.likes.where(flag: nil).where('title LIKE ?', "%#{params[:name]}%").order(id: :desc).page(params[:page])
+    elsif params[:keyword] == 'old' && params[:name].present? && params[:favorite] == "1" && params[:tag] == "0"
+      return @topics = current_user.likes.where(flag: nil).where('title LIKE ?', "%#{params[:name]}%").order(id: :asc).page(params[:page])
+    elsif params[:keyword] == 'new' && !params[:name].present? && params[:favorite] == "1" && params[:tag] == "0"
+      return @topics = current_user.likes.where(flag: nil).order(id: :desc).page(params[:page])
+    elsif params[:keyword] == 'old' && !params[:name].present? && params[:favorite] == "1" && params[:tag] == "0"
+      return @topics = current_user.likes.where(flag: nil).order(id: :asc).page(params[:page])
+    end
+ 
+    
+    if params[:keyword] == 'new' && params[:name].present? && params[:favorite] == "1" && !(params[:tag] == "0")
+      return @topics = current_user.likes.where(flag: nil).where('title LIKE ?', "%#{params[:name]}%").where(tag: "#{params[:tag]}").order(id: :desc).page(params[:page])
+    elsif params[:keyword] == 'old' && params[:name].present? && params[:favorite] == "1" && !(params[:tag] == "0")
+      return @topics = current_user.likes.where(flag: nil).where('title LIKE ?', "%#{params[:name]}%").where(tag: "#{params[:tag]}").order(id: :asc).page(params[:page])
+    elsif params[:keyword] == 'new' && !params[:name].present? && params[:favorite] == "1" && !(params[:tag] == "0")
+      return @topics = current_user.likes.where(flag: nil).where(tag: "#{params[:tag]}").order(id: :desc).page(params[:page])
+    elsif params[:keyword] == 'old' && !params[:name].present? && params[:favorite] == "1" && !(params[:tag] == "0")
+      return @topics = current_user.likes.where(flag: nil).where(tag: "#{params[:tag]}").order(id: :asc).page(params[:page])
+    elsif params[:keyword] == 'new' && !params[:name].present? && !(params[:favorite] == "1") && !(params[:tag] == "0")
+      return @topics = Topic.where(flag: nil).where(tag: "#{params[:tag]}").order(id: :desc).page(params[:page])
+    elsif params[:keyword] == 'old' && !params[:name].present? && !(params[:favorite] == "1") && !(params[:tag] == "0")
+      return @topics = Topic.where(flag: nil).where(tag: "#{params[:tag]}").order(id: :asc).page(params[:page])
+    elsif params[:keyword] == 'new' && params[:name].present? && !(params[:favorite] == "1") && !(params[:tag] == "0")
+      return @topics = Topic.where(flag: nil).where('title LIKE ?', "%#{params[:name]}%").where(tag: "#{params[:tag]}").order(id: :desc).page(params[:page])
+    elsif params[:keyword] == 'old' && params[:name].present? && !(params[:favorite] == "1") && !(params[:tag] == "0")
+      return @topics = Topic.where(flag: nil).where('title LIKE ?', "%#{params[:name]}%").where(tag: "#{params[:tag]}").order(id: :asc).page(params[:page])
+    end
+  
+end
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   def create
@@ -44,7 +110,7 @@ class TopicsController < ApplicationController
 
     if @topic.save 
       flash[:success] = 'コミュニティを作成しました。'
-      redirect_to root_url
+      redirect_to topics_url
     else
       @topics = Topic.order(id: :desc).page(params[:page])
       flash.now[:danger] = 'コミュニティの作成に失敗しました。'
@@ -61,7 +127,7 @@ class TopicsController < ApplicationController
   private
 
   def topic_params
-    params.require(:topic).permit(:title)
+    params.require(:topic).permit(:title, :tag)
   end
   
   def correct_user

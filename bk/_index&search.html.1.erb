@@ -1,0 +1,84 @@
+<!--全コード追加-->
+<h1>コミュニティ一覧画面</h1>
+
+<div class="row">
+  <aside class="col-sm-4">
+    
+    <%= form_with(model: @topic, local: true) do |f| %>
+      <div class="form-group">
+        <%= f.text_area :title, class: 'form-control', rows: 5 %>
+      </div>
+      <%= f.submit 'Post', class: 'btn btn-primary btn-block' %>
+    <% end %>
+    
+    
+    <%= form_with(url: search_path, method: :get, local: true) do |f| %>
+      <div class="form-group">
+        <%= f.select :keyword, [['コミュニティ作成日が新しい順', 'new'],['コミュニティ作成日が古い順', 'old']] ,{selected: params[:keyword]}, { class: 'form-control'}%>
+      </div>
+      <div class="form-group">
+        <%= f.text_field :name, :placeholder => "コミュニティタイトル名で検索", value: params[:name], class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= f.check_box :favorite ,  {checked: (params[:favorite] == "1")} %>
+        <%= f.label :favorite, "お気に入りのみ表示" %>
+      </div>
+      <%= f.submit '更新', class: 'btn btn-primary btn-block' %>
+    <% end %>
+    
+  </aside>
+  
+  <div class="col-sm-8">
+    
+    <ul class="list-unstyled">
+      <% @topics.each do |topic| %>
+        <li class="media mb-3">
+          <img class="mr-2 rounded" src="<%= gravatar_url(topic.user, { size: 50 }) %>" alt="">
+          <div class="media-body">
+            
+            <div>       
+              <% if current_user.likes?(topic) %>
+                <%= form_with(model: current_user.favorites.find_by(topic_id: topic.id), local: true, method: :delete) do |f| %>
+                  <%= hidden_field_tag :topic_id, topic.id %>
+                  <%= f.button :type => "submit", :style => "background: none;border-style: none; cursor: pointer;" do %>
+                     <i class='fas fa-star'></i>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <%= form_with(model: current_user.favorites.build, local: true) do |f| %>
+                  <%= hidden_field_tag :topic_id, topic.id %>
+                  <%= f.button :type => "submit", :style => "background: none; border-style: none; cursor: pointer;" do %>
+                    <i class='far fa-star'></i>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>    
+            
+            <div>
+              <spna class="badge badge-secondary"><%= topic.microposts.count %></spna> 
+              <%= link_to topic.user.name, user_path(topic.user) %> 
+              <span class="text-muted">作成日<%= topic.created_at.strftime('%Y/%m/%d')%></span>
+              <span class="text-muted">最新投稿日時<%= topic.microposts.last&.created_at&.strftime('%Y/%m/%d %H:%M')%></span>
+              
+            </div>
+            <div>
+              <p class="mb-0"><%= topic.title %></p>
+            </div>
+            <div>
+              <%= link_to "このコミュニティのレス一覧画面へ", micropost_path( topic.id ), class: 'btn btn btn-primary btn-sm' %>
+              <% if current_user == topic.user %>
+                <%= link_to "Delete", topic, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
+              <% end %>
+            </div>
+          </div>
+        </li>
+      <% end %>
+      <%= paginate @topics %>
+    </ul>
+    
+  </div>
+</div>
+
+
+
+

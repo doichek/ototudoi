@@ -8,12 +8,22 @@ class MicropostsController < ApplicationController
     @microposts = @topic.microposts.order(id: :desc).page(params[:page])
   end
   
+  def search
+    @topic = Topic.find_by(id: params[:id]) 
+    @micropost = @topic.microposts.build
+    if params[:keyword] == 'new'
+      @microposts = @topic.microposts.order(id: :desc).page(params[:page])
+    else #old
+      @microposts = @topic.microposts.order(id: :asc).page(params[:page])
+    end
+  end
+  
   def create
     @topic = Topic.find_by(id: params[:micropost][:topic_id]) 
     @micropost = @topic.microposts.build(micropost_params)
     if @micropost.save
       flash[:success] = 'メッセージを投稿しました。'
-      redirect_to root_url
+      redirect_to micropost_url(@micropost.topic_id)#この書き方ではなく別の書き方
     else
       @microposts = current_user.microposts.order(id: :desc).page(params[:page])
       flash.now[:danger] = 'メッセージの投稿に失敗しました。'

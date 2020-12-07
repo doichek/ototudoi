@@ -1,80 +1,108 @@
 <!--全コード追加-->
-<h1>コミュニティ一覧画面</h1>
+<h1 class="mb-4 subtitle">コミュニティ一覧</h1>
 
 <div class="row">
-  <aside class="col-sm-4">
-    
-    <%= form_with(model: @topic, local: true) do |f| %>
-      <div class="form-group">
-        <%= f.text_area :title, class: 'form-control', rows: 5 %>
-      </div>
-      <%= f.submit 'Post', class: 'btn btn-primary btn-block' %>
-    <% end %>
-    
-    
-    <%= form_with(url: search_path, method: :get, local: true) do |f| %>
-      <div class="form-group">
-        <%= f.select :keyword, [['コミュニティ作成日が新しい順', 'new'],['コミュニティ作成日が古い順', 'old']] ,{selected: params[:keyword]}, { class: 'form-control'}%>
-      </div>
-      <div class="form-group">
-        <%= f.text_field :name, :placeholder => "コミュニティタイトル名で検索", value: params[:name], class: 'form-control' %>
-      </div>
-      <div class="form-group">
-        <%= f.check_box :favorite ,  {checked: (params[:favorite] == "1")} %>
-        <%= f.label :favorite, "お気に入りのみ表示" %>
-      </div>
-      <%= f.submit '更新', class: 'btn btn-primary btn-block' %>
-    <% end %>
-    
-  </aside>
+  <div  class="col-sm-4">
+    <aside class="p-3 mb-4 wakumoji" style="border: 2px solid #f4623a;border-radius: 5px; background-color:#f5f5f5; height:180px">
+      
+      <%= form_with(model: @topic, local: true) do |f| %>
+        <div class="form-group">
+          <%= f.text_field :title, :placeholder => "コミュニティ名", class: 'form-control mb-3' %>
+          <%= f.select :tag, [['全般', '1'],['雑談', '2'],['攻略', '3']] ,{selected: 1}, { class: 'form-control mb-3'}%>
+          <%= f.submit '作成', class: 'btn btn-block rounded-pill', :style => "background-color:#f4623a; color:white;"%>
+        </div>
+      <% end %>
+    </aside>
+      
+    <aside class="p-3 wakumoji2" style="border: 2px solid #f4623a;border-radius: 5px; background-color:#f5f5f5;">
+      <%= form_with(url: search_topics_path, method: :get, local: true) do |f| %>
+        <div class="form-group">
+          <%= f.select :keyword, [['コミュニティ作成日が新しい順', 'new'],['コミュニティ作成日が古い順', 'old']] ,{selected: params[:keyword]}, { class: 'form-control'}%>
+        </div>
+        <div class="form-group">
+          <%= f.text_field :name, :placeholder => "コミュニティ名で検索", value: params[:name], class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.check_box :favorite ,  {checked: (params[:favorite] == "1")} %>
+          <%= f.label :favorite, "お気に入りのみ表示" %>
+        </div>
+        <div class="form-group">
+          <%= f.select :tag, [['すべてのタグ', '0'],['全般', '1'],['雑談', '2'],['攻略', '3']] ,{selected: params[:tag]}, { class: 'form-control'}%>
+        </div>
+        <%= f.submit '更新', class: 'btn btn-block rounded-pill', :style => "background-color:#f4623a; color:white;" %>
+      <% end %>
+      
+    </aside>
+  </div>
   
   <div class="col-sm-8">
     
-    <ul class="list-unstyled">
-      <% @topics.each do |topic| %>
-        <li class="media mb-3">
-          <img class="mr-2 rounded" src="<%= gravatar_url(topic.user, { size: 50 }) %>" alt="">
-          <div class="media-body">
-            
-            <div>       
-              <% if current_user.likes?(topic) %>
-                <%= form_with(model: current_user.favorites.find_by(topic_id: topic.id), local: true, method: :delete) do |f| %>
-                  <%= hidden_field_tag :topic_id, topic.id %>
-                  <%= f.button :type => "submit", :style => "background: none;border-style: none; cursor: pointer;" do %>
-                     <i class='fas fa-star'></i>
-                  <% end %>
-                <% end %>
-              <% else %>
-                <%= form_with(model: current_user.favorites.build, local: true) do |f| %>
-                  <%= hidden_field_tag :topic_id, topic.id %>
-                  <%= f.button :type => "submit", :style => "background: none; border-style: none; cursor: pointer;" do %>
-                    <i class='far fa-star'></i>
-                  <% end %>
+    <% @topics.each do |topic| %>
+    <div class="card mb-3 shadow-lg" style="border-color:#f4623a;">
+      <div class="card-header pt-0 pb-0" style="background-color:#f4623a;">
+        
+          <% if current_user.likes?(topic) %>
+            <%= form_with(model: current_user.favorites.find_by(topic_id: topic.id), local: true, method: :delete, :class => "d-inline") do |f| %>
+              <%= hidden_field_tag :topic_id, topic.id %>
+              <%= f.button :type => "submit" , :style => "border:none; background:none;" do %>
+                <i class='fas fa-star' style ="color:yellow; font-size: 0.8em;"></i>
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= form_with(model: current_user.favorites.build, local: true, :class => "d-inline") do |f| %>
+              <%= hidden_field_tag :topic_id, topic.id %>
+              <%= f.button :type => "submit", :style => "border:none; background:none;"  do %>
+                <i class='far fa-star' style ="color:yellow; font-size: 0.8em;"></i>
+              <% end %>
+            <% end %>
+          <% end %>
+
+          
+          <% if topic.tag == 1 %>
+            <%= link_to "全般", search_topics_path(tag: 1, keyword: "new", favorite: 0, name: ""), :class => "badge badge-primary" %>
+          <% elsif topic.tag == 2 %>
+            <%= link_to "雑談", search_topics_path(tag: 2, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 3 %>
+            <%= link_to "攻略", search_topics_path(tag: 3, keyword: "new", favorite: 0, name: ""), :class => "badge badge-success" %>
+          <% end %> 
+        
+           
+           <div style="float: right;">
+              <span style="font-size:5px; color:white;">作成者:</span>
+               <img class="rounded" src="<%= gravatar_url(current_user, { size: 15 }) %>" alt="">
+               <% if current_user == topic.user %>
+                <%= link_to topic.user.name, user_path(topic.user), :style => "font-size:13px; background-color:#e3f7be;" %>
+               <% else %>
+                <%= link_to topic.user.name, user_path(topic.user), :style => "color:white; font-size:13px;" %>
+               <% end %>
+                
+                
+                 <% if current_user == topic.user %>
+                <%= link_to topic, :method => :delete , data: { confirm: "You sure?" } do %>
+                 <i class="fas fa-trash-alt ml-1" style ="color:#696969; font-size: 0.8em;"></i>
                 <% end %>
               <% end %>
-            </div>    
+           </div>
             
-            <div>
-              <spna class="badge badge-secondary"><%= topic.microposts.count %></spna> 
-              <%= link_to topic.user.name, user_path(topic.user) %> 
-              <span class="text-muted">作成日<%= topic.created_at.strftime('%Y/%m/%d')%></span>
-              <span class="text-muted">最新投稿日時<%= topic.microposts.last&.created_at&.strftime('%Y/%m/%d %H:%M')%></span>
-              
-            </div>
-            <div>
-              <p class="mb-0"><%= topic.title %></p>
-            </div>
-            <div>
-              <%= link_to "このコミュニティのレス一覧画面へ", micropost_path( topic.id ), class: 'btn btn btn-primary btn-sm' %>
-              <% if current_user == topic.user %>
-                <%= link_to "Delete", topic, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
-              <% end %>
-            </div>
-          </div>
-        </li>
-      <% end %>
-      <%= paginate @topics %>
-    </ul>
+            
+            
+          
+        <!--</div>-->
+      </div>
+      
+      <a href="<%= micropost_path( topic.id ) %>" class="card-body pt-1 pb-1" style="text-decoration: none;" onMouseOut="this.style.opacity='1'" onMouseOver="this.style.opacity='0.5'">
+        
+          <h4 class="card-title" style="color:black;"><%= topic.title %></h4>
+          <p class="card-text">
+            <spna class="text-muted">投稿数:<%= topic.microposts.count %></spna> 
+            <span class="text-muted">最終投稿日時:<%= topic.microposts.last&.created_at&.strftime('%Y/%m/%d %H:%M')%></span>
+           
+          </p>
+        
+      </a>
+    </div>
+    <% end %>
+    <%= paginate @topics %>
     
   </div>
 </div>

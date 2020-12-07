@@ -1,0 +1,67 @@
+<!--吹き出しはじまり-->
+<div class="balloon5">
+  <div class="faceicon">
+    <img class="mr-2 rounded" src="" alt="">
+  </div>
+  <div class="chatting">
+    <div class="says">
+      <p>★文章を入れる★</p>
+    </div>
+  </div>
+</div>
+<!--吹き出し終わり-->
+
+
+
+<h1 class="test"><%= @topic.title %></h1>
+<div class="row">
+  <div  class="col-sm-4">
+    <aside class="p-3 mb-2" style="border: 2px solid #f4623a;border-radius: 5px; background-color:#f5f5f5; height:220px">
+      <%= form_with(model: @micropost, local: true) do |f| %>
+        <div class="form-group">
+          <%= f.text_area :content, class: 'form-control', rows: 5 %>
+          <%= f.hidden_field :topic_id, :value => @micropost.topic_id %>
+          <!--↑「@micropost.topic_id」をパラメータとしてmicroposts#CREATEに渡す処理-->
+        </div>
+          <%= f.submit '投稿', class: 'btn btn-block rounded-pill mb-3', :style => "background-color:#f4623a; color:white;" %>
+      <% end %>
+    </aside>
+    
+    <aside class="p-3 mb-2"  style="border: 2px solid #f4623a;border-radius: 5px; background-color:#f5f5f5; height:130px">
+      <%= form_with(url: search_micropost_path, method: :get, local: true) do |f| %>
+        <div class="form-group">
+          <%= f.select :keyword, [['投稿日が新しい順', 'new'],['投稿日が古い順', 'old']] ,{selected: params[:keyword]}, { class: 'form-control'}%>
+        </div>
+          <%= f.submit '更新', class: 'btn btn-block rounded-pill', :style => "background-color:#f4623a; color:white;" %>
+      <% end %>
+    </aside>
+  </div>
+  <div class="col-sm-8">
+    
+    <ul class="list-unstyled">
+      <% @microposts.each do |micropost| %>
+        <li class="card mb-3">
+          
+          <div class="card-body">
+            
+            <div class="form-inline">
+              <img class="mr-2 rounded" src="<%= gravatar_url(micropost.user, { size: 25 }) %>" alt="">
+              <%= link_to micropost.user.name, user_path(micropost.user) %> 
+              <span class="text-muted">投稿日 <%= micropost.created_at.strftime('%Y/%m/%d %H:%M') %></span>
+              <% if current_user == micropost.user %>
+               <%= link_to micropost, :method => :delete , data: { confirm: "本当に削除しますか?" }, class: 'btn btn-danger btn-sm p-0' do %>
+                 <i class="fas fa-trash-alt"></i>
+                <% end %>
+              <% end %>
+            </div>
+            <div>
+              <p class="mb-0"><%= micropost.content %></p>
+            </div>
+          </div>
+        </li>
+      <% end %>
+      <%= paginate @microposts %>
+    </ul>
+    
+  </div>
+</div>

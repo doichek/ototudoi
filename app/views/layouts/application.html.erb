@@ -6,24 +6,42 @@
     <title>Ototudoi</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    
+    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 
+    <% if !logged_in? %><!--このやり方ゴリ押しなのでどうにかしたい-->
+      <link rel="stylesheet" href="/assets/toppages.scss">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+    <% end %>
+    
     <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>
+    <!--<script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>-->
+    <!--<script defer src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" integrity="sha384-9/D4ECZvKMVEJ9Bhr3ZnUAF+Ahlagp1cyPC7h5yDlZdXs4DQ/vRftzfd+2uFUuqS" crossorigin="anonymous"></script>-->
+    <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">-->
+    <!--<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">-->
+    <!--<script src="https://kit.fontawesome.com/0775435c1b.js" crossorigin="anonymous"></script>-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
   </head>
 
-  <body>
-    <%= render 'layouts/navbar' %>
+  
+    
 
-    <div class="container">
-      <%= render 'layouts/flash_messages' %>
-
+    <% if logged_in? %>
+    <body>
+      <%= render 'layouts/navbar' %>
+      <div class="container">
+        <%= render 'layouts/flash_messages' %>
+        <%= yield %>
+      </div>
+    </body>
+    <% else %>
       <%= yield %>
-    </div>
-  </body>
+    <% end %>
+    
+ 
 </html>

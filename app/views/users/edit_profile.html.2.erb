@@ -1,0 +1,77 @@
+ <%= form_with(model: @user, local: true) do |f| %>
+<div class="row">
+  <aside class="col-sm-4">
+    <div class="card" style="border-color:#f4623a;">
+      <div class="card-header" style="background-color:#f4623a; color:white;">
+        <h3 class="card-title"><%= @user.name %></h3>
+      </div>
+      <div class="card-body">
+        <img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
+      </div>
+    </div>
+    
+    <div class="form-group">
+        <% if @user.image? %>
+          <%= image_tag @user.image.url %>
+          <p>a</p>
+        <% else %>
+          <%= image_tag("/ototudoi/app/assets/images/icon/no-image.png") %>
+          <p>b</p>
+        <% end %>
+        <%= f.file_field :image %>
+    </div>
+    
+    <%= f.submit '更新する', class: 'btn  btn-block rounded-pill mt-2', :style => "background-color:#f4623a; color:white;"%>
+  </aside>
+
+  <div class="col-sm-8">
+    <ul class="nav nav-tabs nav-justified mb-3">
+      <li class="nav-item nav-link active">プロフィール編集  </li>
+    </ul>
+   
+     <form >
+        <div class="form-group row" style="font-size:15px;">
+          <label for="inputContent" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">自己紹介</label>
+          <div class="col-sm-10">
+            <!--<input type="content" class="form-control" id="content">-->
+            <%= f.text_area :content, :class => "form-control" %>
+          </div>
+        </div>
+        <div class="form-group row" style="font-size:15px;">
+          <label for="staticSex" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">性別</label>
+          <div class="col-sm-10">
+            <%= f.select :sex, [['非公開', '0'],['男性', '1'],['女性', '2']] ,{selected: @user.sex}, { class: 'form-control mb-3'}%>
+          </div>
+        </div>
+        <div class="form-group row" style="font-size:15px;">
+          <label for="inputAddress" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">居住地</label>
+          <div class="col-sm-10">
+            <!--<input type="address" class="form-control" id="address">-->
+            <%= f.text_area :address, :class => "form-control" %>
+          </div>
+        </div>
+        <div class="form-group row" style="font-size:15px;">
+          <label for="inputContent2" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">プレイしている音ゲー</label>
+          <div class="col-sm-10">
+            <%= f.text_area :content2, :class => "form-control" %>
+          </div>
+        </div>
+        <div class="form-group row" style="font-size:15px;">
+          <label for="inputContent3" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">プレイ環境</label>
+          <div class="col-sm-10">
+            <%= f.text_area :content3, :class => "form-control" %>
+          </div>
+        </div>
+        <div class="form-group row" style="font-size:15px;">
+          <label for="inputContent4" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">好きな楽曲・譜面</label>
+          <div class="col-sm-10">
+            <%= f.text_area :content4, :class => "form-control" %>
+          </div>
+        </div>
+      </form>
+    　
+   
+  </div>
+</div>
+
+ <% end %>

@@ -1,17 +1,20 @@
 <% if users.any? %>
   <ul class="list-unstyled">
     <% users.each do |user| %>
+    <a class="card mb-3 shadow-lg" href="<%= user_path(user) %>" style="border-color:#f4623a; color:black; text-decoration: none; border-left-width:8px" onMouseOut="this.style.opacity='1'" onMouseOver="this.style.opacity='0.5'">
+   
       <li class="media">
-        <img class="mr-2 rounded" src="<%= gravatar_url(user, { size: 50 }) %>" alt="">
+        <img class="mr-2 rounded" src="<%= gravatar_url(user, { size: 60 }) %>" alt="">
         <div class="media-body">
-          <div>
+          <h2>
             <%= user.name %>
-          </div>
+          </h2>
           <div>
-            <p><%= link_to 'View profile', user_path(user) %></p>
+            <p><%= user.content %></p>
           </div>
         </div>
       </li>
+    </a>
     <% end %>
   </ul>
   <%= paginate users %>
