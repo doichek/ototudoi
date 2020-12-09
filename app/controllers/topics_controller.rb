@@ -7,6 +7,9 @@ class TopicsController < ApplicationController
     if logged_in?
       @topic = current_user.topics.build  # form_with 用
       @topics = Topic.where(flag: nil).order(id: :desc).page(params[:page])
+    else
+      @topic = Topic.new  # ログインしていない用(ダミー)
+      @topics = Topic.where(flag: nil).order(id: :desc).page(params[:page])
     end
   end
   

@@ -1,5 +1,5 @@
 <header class="mb-4">
-  <nav class="navbar navbar-expand-sm navbar-dark" style="background-color:#f4623a;">
+  <nav class="navbar navbar-expand-sm navbar-dark" style="background-color:#f4623a; box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.5);">
     <% if logged_in? %>
       <%= link_to '音集い', topics_path, class: 'navbar-brand navstyle1' %>
     <% else %>  <!--ログイン画面、新規登録画面の場合-->
@@ -16,7 +16,12 @@
         <li class="nav-item"><%= link_to 'ユーザ一覧', users_path, class: 'nav-link navstyle2' %></li>
         <li class="nav-item"><%= link_to current_user.name, user_path(current_user), class: 'nav-link navstyle2' %></li>
         <li class="nav-item"><%= link_to 'ログアウト', logout_path, method: :delete, class: 'nav-link navstyle2' %></li>
-         <% end %>
+        <% else %>
+        <li class="nav-item"><%= link_to 'コミュニティ一覧', topics_path, class: 'nav-link navstyle2' %></li>
+        <li class="nav-item"><%= link_to 'ユーザ一覧', users_path, class: 'nav-link navstyle2' %></li>
+        <li class="nav-item"><%= link_to '新規登録', new_user_path, class: 'nav-link navstyle2' %></li>
+        <li class="nav-item"><%= link_to 'ログイン', login_path, class: 'nav-link navstyle2' %></li>
+        <% end %>
       </ul>
     </div>
    

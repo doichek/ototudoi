@@ -1,3 +1,10 @@
+<!--ログインしていないとき用、ごり押しどうにかしたい-->
+<% if !logged_in? %>
+<%= render 'layouts/navbar' %>
+  <div class="container">
+  <%= render 'layouts/flash_messages' %>
+<% end %>
+
 <!--全コード追加-->
 <h1 class="mb-4 subtitle">コミュニティ一覧</h1>
 
@@ -41,6 +48,7 @@
     <div class="card mb-3 shadow-lg" style="border-color:#f4623a;">
       <div class="card-header pt-0 pb-0" style="background-color:#f4623a;">
         
+        <% if logged_in? %>
           <% if current_user.likes?(topic) %>
             <%= form_with(model: current_user.favorites.find_by(topic_id: topic.id), local: true, method: :delete, :class => "d-inline") do |f| %>
               <%= hidden_field_tag :topic_id, topic.id %>
@@ -56,6 +64,22 @@
               <% end %>
             <% end %>
           <% end %>
+        <% else %>
+        <!--ログインしてない人用のダミー-->
+            <%= form_with(model: Favorite.new, local: true, :class => "d-inline") do |f| %>
+              <%= hidden_field_tag :topic_id, topic.id %>
+              <%= f.button :type => "submit", :style => "border:none; background:none;"  do %>
+                <i class='far fa-star' style ="color:yellow; font-size: 0.8em;"></i>
+              <% end %>
+            <% end %>
+        <% end %>
+        
+        
+        
+        
+        
+        
+        
 
           
           <% if topic.tag == 1 %>
@@ -69,7 +93,8 @@
            
            <div style="float: right;">
               <span style="font-size:5px; color:white;">作成者:</span>
-               <img class="rounded" src="<%= gravatar_url(current_user, { size: 15 }) %>" alt="">
+               <!--<img class="rounded" src="<= gravatar_url(current_user, { size: 15 }) %>" alt="">-->
+               <%= image_tag "no-image.jpg", class: 'rounded img-fluid', size: '15', alt: "てすと画像" %>
                <% if current_user == topic.user %>
                 <%= link_to topic.user.name, user_path(topic.user), :style => "font-size:13px; background-color:#e3f7be;" %>
                <% else %>
@@ -108,5 +133,6 @@
 </div>
 
 
-
-
+<% if !logged_in? %>
+</div>
+<% end %>
