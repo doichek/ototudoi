@@ -46,6 +46,8 @@ class TopicsController < ApplicationController
 
 
 def search
+  if logged_in?
+    
     @topic = current_user.topics.build
     
     if params[:keyword] == 'new' && !params[:name].present? && params[:favorite] == "0" && params[:tag] == "0"
@@ -91,6 +93,9 @@ def search
       return @topics = Topic.where(flag: nil).where('title LIKE ?', "%#{params[:name]}%").where(tag: "#{params[:tag]}").order(id: :asc).page(params[:page])
     end
   
+  else
+    redirect_to login_url
+  end
 end
 
  
@@ -109,15 +114,20 @@ end
 
 
   def create
-    @topic = current_user.topics.build(topic_params)
-
-    if @topic.save 
-      flash[:success] = 'コミュニティを作成しました。'
-      redirect_to topics_url
+    if logged_in?
+      @topic = current_user.topics.build(topic_params)
+  
+      if @topic.save 
+        flash[:success] = 'コミュニティを作成しました。'
+        redirect_to topics_url
+      else
+        @topics = Topic.order(id: :desc).page(params[:page])
+        flash.now[:danger] = 'コミュニティの作成に失敗しました。'
+        render 'toppages/index'
+      end
+      
     else
-      @topics = Topic.order(id: :desc).page(params[:page])
-      flash.now[:danger] = 'コミュニティの作成に失敗しました。'
-      render 'toppages/index'
+    redirect_to login_url
     end
   end
 

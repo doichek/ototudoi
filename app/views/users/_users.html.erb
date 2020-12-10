@@ -4,7 +4,8 @@
     <a class="card mb-3 shadow-lg" href="<%= user_path(user) %>" style="border-color:#f4623a; color:black; text-decoration: none; border-left-width:8px" onMouseOut="this.style.opacity='1'" onMouseOver="this.style.opacity='0.5'">
    
       <li class="media">
-        <img class="mr-2 rounded" src="<%= gravatar_url(user, { size: 60 }) %>" alt="">
+        <!--<img class="mr-2 rounded" src="<%= gravatar_url(user, { size: 60 }) %>" alt="">-->
+        <%= image_tag "no-image.jpg", class: 'rounded img-fluid mr-2', size: '60', alt: "てすと画像" %>
         <div class="media-body">
           <h2>
             <%= user.name %>

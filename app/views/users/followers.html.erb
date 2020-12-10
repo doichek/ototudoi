@@ -6,7 +6,8 @@
         <%= render 'relationships/follow_button', user: @user %>
       </div>
       <div class="card-body">
-        <img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
+        <!--<img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">-->
+        <%= image_tag "no-image.jpg", class: 'rounded img-fluid', size: '500', alt: "てすと画像" %>
       </div>
     </div>
   </aside>

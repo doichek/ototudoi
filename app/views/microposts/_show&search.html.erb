@@ -1,3 +1,10 @@
+<!--ログインしていないとき用、ごり押しどうにかしたい-->
+<% if !logged_in? %>
+<%= render 'layouts/navbar' %>
+  <div class="container">
+  <%= render 'layouts/flash_messages' %>
+<% end %>
+
 
 <% if @topic.tag == 1 %>
   <span class="badge badge-primary">全般</span>
@@ -40,7 +47,8 @@
       <% if !@microposts.any? %>何も投稿されていません<% end %>
       <% @microposts.each do |micropost| %>
       <div class="form-inline">
-        <img class="mr-2 rounded" src="<%= gravatar_url(micropost.user, { size: 25 }) %>" alt="">
+        <!--<img class="mr-2 rounded" src="<%= gravatar_url(micropost.user, { size: 25 }) %>" alt="">-->
+        <%= image_tag "no-image.jpg", class: 'rounded img-fluid mr-2', size: '25', alt: "てすと画像" %>
   
           <li class="balloon mb-0">
             <% if current_user == micropost.user %>
@@ -65,3 +73,7 @@
     
   </div>
 </div>
+
+<% if !logged_in? %>
+</div>
+<% end %>

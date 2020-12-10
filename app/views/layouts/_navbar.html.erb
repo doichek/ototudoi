@@ -18,7 +18,7 @@
         <li class="nav-item"><%= link_to 'ログアウト', logout_path, method: :delete, class: 'nav-link navstyle2' %></li>
         <% else %>
         <li class="nav-item"><%= link_to 'コミュニティ一覧', topics_path, class: 'nav-link navstyle2' %></li>
-        <li class="nav-item"><%= link_to 'ユーザ一覧', users_path, class: 'nav-link navstyle2' %></li>
+        <li class="nav-item"><%= link_to 'ユーザ一覧', login_path, class: 'nav-link navstyle2' %></li>
         <li class="nav-item"><%= link_to '新規登録', new_user_path, class: 'nav-link navstyle2' %></li>
         <li class="nav-item"><%= link_to 'ログイン', login_path, class: 'nav-link navstyle2' %></li>
         <% end %>

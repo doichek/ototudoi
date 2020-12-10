@@ -178,10 +178,20 @@ font-weight:bold;
 /*}*/
 .navstyle1{
   font-weight:700;
+  color:rgba(255, 255, 255, 0.7)!important; 
+}
+
+.navstyle1:hover{
+  color:rgba(255, 255, 255, 1)!important;
 }
 
 .navstyle2{
   font-weight:700;
   font-size: 0.9rem;
+  color:rgba(255, 255, 255, 0.7);
+}
+
+.navstyle2:hover{
+  color:rgba(255, 255, 255, 1);
 }
 

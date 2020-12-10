@@ -6,9 +6,13 @@ class UsersController < ApplicationController
   end
   
   def show
-    @user = User.find(params[:id])
-    @microposts = @user.microposts.order(id: :desc).page(params[:page])
-    counts(@user)
+    if logged_in?
+      @user = User.find(params[:id])
+      @microposts = @user.microposts.order(id: :desc).page(params[:page])
+      counts(@user)
+    else
+      redirect_to login_url
+    end
   end
 
   def new
