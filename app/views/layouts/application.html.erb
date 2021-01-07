@@ -3,14 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Ototudoi</title>
+    <title>音集い</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     
-    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-
-
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
     
     <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
@@ -22,13 +21,12 @@
     <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">-->
     <!--<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">-->
     <!--<script src="https://kit.fontawesome.com/0775435c1b.js" crossorigin="anonymous"></script>-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
   </head>
-
   
-    
-
-    <% if logged_in? %>
+  <!--ログイン前のトップページにアクセスする場合とそれ以外の場合-->
+  <% if "https://67ad076fa29a461da79cf5a14ef43718.vfs.cloud9.us-east-1.amazonaws.com/" == request.url %>
+    <%= yield %>
+  <% else %>  
     <body>
       <%= render 'layouts/navbar' %>
       <div class="container">
@@ -36,9 +34,6 @@
         <%= yield %>
       </div>
     </body>
-    <% else %>
-      <%= yield %>
-    <% end %>
-    
- 
+  <% end %>
+  
 </html>

@@ -1,30 +1,26 @@
-<%= render 'layouts/navbar' %>
-<div class="container">
-        <%= render 'layouts/flash_messages' %>
-
 <div class="text-center">
   <h1 class="subtitle">ログイン</h1>
 </div>
 
 <div class="row">
   <div class="col-sm-6 offset-sm-3">
-
+    
     <%= form_with(url: login_path, scope: :session, local: true) do |f| %>
-
       <div class="form-group">
-        <%= f.label :email, 'メールアドレス', :style => "border-bottom:solid 2px #f4623a;" %>
+        <%= f.label :email, 'メールアドレス', :class => "border-bottom" %>
         <%= f.email_field :email, class: 'form-control' %>
       </div>
-
+      
       <div class="form-group">
-        <%= f.label :password, 'パスワード', :style => "border-bottom:solid 2px #f4623a;" %>
+        <%= f.label :password, 'パスワード', :class => "border-bottom" %>
         <%= f.password_field :password, class: 'form-control' %>
       </div>
-
-      <%= f.submit 'ログイン', class: 'btn rounded-pill btn-block', :style => "background-color:#f4623a; color:white;" %>
+      
+      <%= f.submit 'ログイン', class: 'btn rounded-pill btn-primary btn-block' %>
     <% end %>
-
-    <p>アカウント作成は<%= link_to 'こちら', signup_path %></p>
+    
+    <p class="mb-0">アカウント作成は<%= link_to 'こちら', signup_path %></p>
+    <p>ゲストユーザでのログインは<%= link_to 'こちら', guest_login_path, method: :post %></p>
+    
   </div>
-</div>
 </div>

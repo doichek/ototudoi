@@ -1,25 +1,19 @@
 class UsersController < ApplicationController
-  before_action :require_user_logged_in, only: [:index, :show, :followings, :followers, :edit]
+  before_action :require_user_logged_in, only: [:index, :show, :followings, :followers, :edit_profile,  :edit_account, :posts, :search,]
+  before_action :correct_user, only: [:edit_account, :edit_profile]
   
   def index
     @users = User.order(id: :desc).page(params[:page]).per(25)
   end
   
   def show
-    if logged_in?
-      @user = User.find(params[:id])
-      @microposts = @user.microposts.order(id: :desc).page(params[:page])
-      counts(@user)
-    else
-      redirect_to login_url
-    end
+    @user = User.find(params[:id])
+    @microposts = @user.microposts.order(id: :desc).page(params[:page])
+    counts(@user)
   end
 
   def new
     @user = User.new
-    ##下てすと
-    #@topic = @user.topics.build(title: "#{@user.name}のコミュニティ", flag: 1)
-    ##
   end
   
   def edit_account
@@ -30,30 +24,60 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
   
-
-  
   def update
+    @path = Rails.application.routes.recognize_path(request.referer)
     @user = User.find(params[:id])
-    if @user.update(user_params2)
-      flash[:success] = '編集しました'
-      redirect_to @user
+    #アカウント変更
+    if @path[:action] == "edit_account"
+      if @user.update(user_params)
+        flash[:success] = '登録内容を変更しました'
+        redirect_to @user
+      else
+        flash.now[:danger] = '登録内容の変更に失敗しました'
+        render :edit_account
+      end
+    #プロフィール編集
     else
-      flash.now[:danger] = '編集に失敗しました'
-      render :edit
+      if @user.update(user_params2)
+        flash[:success] = '編集しました'
+        redirect_to @user
+      else
+        flash.now[:danger] = '編集に失敗しました'
+        render :edit_profile
+      end
     end
   end
 
   def create
-    @user = User.new(user_params)
-    #下テスト
-    @topic = @user.topics.build(title: "#{@user.name}のコミュニティ", flag: 1)
-    
-    if @user.save
-      flash[:success] = 'ユーザを登録しました。'
-      redirect_to @user
+    @path = Rails.application.routes.recognize_path(request.referer)
+    #個人コミュニティからの投稿
+    if @path[:action] == "posts" or "search"
+      @topic = Topic.find_by(user_id: params[:id], flag: 1)
+      @micropost = @topic.microposts.build(micropost_params)
+      @path = Rails.application.routes.recognize_path(request.referer)
+      if @micropost.save
+        flash[:success] = 'メッセージを投稿しました。'
+        redirect_to posts_user_url(@topic.user_id)
+      else
+        #render処理をするとurlが変わってしまいその影響で再度createするとエラーになってしまう(原因不明どうにかしたい)
+        # @microposts = @topic.microposts.order(id: :desc).page(params[:page])
+        # @user = User.find(params[:id])#card表示に必要
+        # flash.now[:danger] = 'メッセージの投稿に失敗しました。'
+        # render 'users/posts&search'
+        flash[:danger] = 'メッセージの投稿に失敗しました。'
+        redirect_to posts_user_url(@topic.user_id)
+      end
+    #アカウントの登録
     else
-      flash.now[:danger] = 'ユーザの登録に失敗しました。'
-      render :new
+      @user = User.new(user_params)
+      @topic = @user.topics.build(title: "#{@user.name}のコミュニティ", flag: 1)
+      if @user.save
+        flash[:success] = 'ユーザを登録しました。'
+        redirect_to @user
+      else
+        flash.now[:danger] = 'ユーザの登録に失敗しました。'
+        render :new
+      end
     end
   end
   
@@ -70,12 +94,24 @@ class UsersController < ApplicationController
   end
   
   def posts
-    @user = User.find(params[:id])#カード表示に必要
-    # @topic = Topic.find_by(user_id: @user.id, frag: 1)
-    @topic = Topic.find_by(user_id: params[:id], flag: 1)#てすと
+    @user = User.find(params[:id])#card表示に必要
+    @topic = Topic.find_by(user_id: params[:id], flag: 1)
     @micropost = @topic.microposts.build
-    @microposts = @topic.microposts.order(id: :desc).page(params[:page])
     counts(@user)
+    @microposts = @topic.microposts.order(id: :desc).page(params[:page])
+    render "posts&search"
+  end
+  
+  def search
+    @user = User.find(params[:id])#card表示に必要
+    @topic = Topic.find_by(user_id: params[:id], flag: 1)
+    @micropost = @topic.microposts.build
+    if params[:keyword] == 'new'
+      @microposts = @topic.microposts.order(id: :desc).page(params[:page])
+    else #old
+      @microposts = @topic.microposts.order(id: :asc).page(params[:page])
+    end
+    render "posts&search"
   end
   
   
@@ -83,13 +119,14 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
-    #params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
   
   def user_params2
     params.require(:user).permit(:content, :sex, :address, :content2, :content3, :content4, :image)
-    # params.require(:user).permit(:nickname, :email, :password, :password_confirmation, :image)
   end
 
+  def micropost_params
+    params.require(:micropost).permit(:content,:image,:youtube_url).merge(user_id: current_user.id)
+  end
 
 end

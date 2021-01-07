@@ -1,29 +1,43 @@
 <header class="mb-4">
-  <nav class="navbar navbar-expand-sm navbar-dark" style="background-color:#f4623a; box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.5);">
-    <% if logged_in? %>
-      <%= link_to '音集い', topics_path, class: 'navbar-brand navstyle1' %>
-    <% else %>  <!--ログイン画面、新規登録画面の場合-->
-       <%= link_to '音集い', root_path, class: 'navbar-brand navstyle1' %>
-     <% end %>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    
-    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-      <ul class="navbar-nav">
-        <% if logged_in? %>
-        <li class="nav-item"><%= link_to 'コミュニティ一覧', topics_path, class: 'nav-link navstyle2' %></li>
-        <li class="nav-item"><%= link_to 'ユーザ一覧', users_path, class: 'nav-link navstyle2' %></li>
-        <li class="nav-item"><%= link_to current_user.name, user_path(current_user), class: 'nav-link navstyle2' %></li>
-        <li class="nav-item"><%= link_to 'ログアウト', logout_path, method: :delete, class: 'nav-link navstyle2' %></li>
-        <% else %>
-        <li class="nav-item"><%= link_to 'コミュニティ一覧', topics_path, class: 'nav-link navstyle2' %></li>
-        <li class="nav-item"><%= link_to 'ユーザ一覧', login_path, class: 'nav-link navstyle2' %></li>
-        <li class="nav-item"><%= link_to '新規登録', new_user_path, class: 'nav-link navstyle2' %></li>
-        <li class="nav-item"><%= link_to 'ログイン', login_path, class: 'nav-link navstyle2' %></li>
+  <nav class="navbar navbar-expand-sm navbar-dark" style="background-color:#f4623a; box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.5);" id="mainNav">
+    <div class="container">
+      <!--ログイン時はコミュニティ一覧画面へ、未ログイン時はトップ画面へ-->
+      <% if logged_in? %>
+        <%= link_to topics_path , class: 'navbar-brand pt-0 pb-0' do %>
+          <%= image_tag "ototudoi.jpg", size: "30x30" %>音集い
         <% end %>
-      </ul>
+      <% else %>
+        <%= link_to root_path, class: 'navbar-brand pt-0 pb-0' do %>
+          <%= image_tag "ototudoi.jpg", size: "30x30" %>音集い
+        <% end %>
+      <% end %>
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <% if logged_in? %>
+            <li class="nav-item"><%= link_to 'コミュニティ一覧', topics_path, class: 'nav-link' %></li>
+            <li class="nav-item"><%= link_to 'ユーザ一覧', users_path, class: 'nav-link' %></li>
+            <li class="nav-item"><%= link_to current_user.name, user_path(current_user), class: 'nav-link' %></li>
+            <li class="nav-item"><%= link_to 'ログアウト', logout_path, method: :delete, class: 'nav-link' %></li>
+          <% else %>
+            <li class="nav-item"><%= link_to 'コミュニティ一覧', topics_path, class: 'nav-link' %></li>
+            <li class="nav-item"><a class= 'nav-link' id = "alart1" href="#" >ユーザ一覧</a></li>
+            <li class="nav-item"><%= link_to '新規登録', new_user_path, class: 'nav-link' %></li>
+            <li class="nav-item"><%= link_to 'ログイン', login_path, class: 'nav-link' %></li>
+          <% end %>
+        </ul>
+      </div>
+      
     </div>
-   
   </nav>
 </header>
+
+<script>
+  $('#alart1').click(function() {
+    alert('ログインが必要です');
+  });
+</script>   

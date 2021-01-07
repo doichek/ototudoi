@@ -1,19 +1,22 @@
 <div class="row">
+  
   <aside class="col-sm-4">
-    <div class="card" style="border:2px solid #f4623a;">
-      <div class="card-header" style="background-color:#f4623a; color:white;">
-          <h3 class="card-title d-inline"><%= @user.name %></h3>
-          <%= render 'relationships/follow_button', user: @user %>
+    <div class="card userIconWaku">
+      <div class="card-header text-light">
+        <h3 class="card-title d-inline"><%= @user.name %></h3>
+        <%= render 'relationships/follow_button', user: @user %>
       </div>
       <div class="card-body">
-        <!--<img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">-->
-        <%= image_tag "no-image.jpg", class: 'rounded img-fluid', size: '500', alt: "てすと画像" %>
+        <% if @user.image? %>
+          <%= image_tag @user.image.url, class: 'rounded img-fluid', size: '500', alt: "ユーザ画像"  %>
+        <% else %>
+          <%= image_tag "no-image.jpg", class: 'rounded img-fluid', size: '500', alt: "デフォルト画像" %>
+        <% end %>  
       </div>
     </div>
-    
     <% if current_user == @user %>
-      <%= link_to "プロフィール編集", edit_profile_user_path, class: 'btn  btn-block rounded-pill mt-2', :style => "background-color:#f4623a; color:white;"  %> 
-      <%= link_to "アカウント編集", edit_account_user_path, class: 'btn  btn-block rounded-pill', :style => "background-color:#f4623a; color:white;"  %> 
+      <%= link_to "プロフィール編集", edit_profile_user_path, class: 'btn  btn-block btn-primary rounded-pill mt-2' %> 
+      <%= link_to "アカウント編集", edit_account_user_path, class: 'btn  btn-block btn-primary rounded-pill' %> 
     <% end %>
   </aside>
 
@@ -26,14 +29,16 @@
     </ul>
     
     <form style="font-size:15px;">
+      
       <div class="form-group row">
-        <label for="staticContent" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">自己紹介</label>
+        <label for="staticContent" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">自己紹介</label>
         <div class="col-sm-10">
           <div style="white-space:pre-line"><%= @user.content %></div>
         </div>
       </div>
+      
       <div class="form-group row">
-        <label for="staticSex" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">性別</label>
+        <label for="staticSex" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">性別</label>
         <div class="col-sm-10">
           <div>
             <% if @user.sex == 1 %>
@@ -46,39 +51,37 @@
           </div>
         </div>
       </div>
+      
       <div class="form-group row">
-        <label for="staticAddress" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">居住地</label>
+        <label for="staticAddress" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">居住地</label>
         <div class="col-sm-10">
           <div style="white-space:pre-line"><%= @user.address %></div>
         </div>
       </div>
+      
       <div class="form-group row">
-        <label for="staticContent2" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">プレイしている音ゲー</label>
+        <label for="staticContent2" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">プレイしている音ゲー</label>
         <div class="col-sm-10">
           <div style="white-space:pre-line"><%= @user.content2 %></div>
         </div>
       </div>
+      
       <div class="form-group row">
-        <label for="staticContent3" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">プレイ環境</label>
+        <label for="staticContent3" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">プレイ環境</label>
         <div class="col-sm-10">
            <div style="white-space:pre-line"><%= @user.content3 %></div>
         </div>
       </div>
+      
       <div class="form-group row">
-        <label for="staticContent4" style="border-bottom:solid 2px #f4623a; height:10%; text-align:center; font-weight:bold;" class="col-sm-2 col-form-label">好きな楽曲・譜面</label>
+        <label for="staticContent4" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">好きな楽曲・譜面</label>
         <div class="col-sm-10">
            <div style="white-space:pre-line"><%= @user.content4 %></div>
         </div>
       </div>
+      
     </form>
-    
-    
-    
-    
-    
-        
-    
-    
   </div>
+  
 </div>
 

@@ -14,6 +14,47 @@
  *= require_self
  */
 
+// 共通
+.nav{
+    font-size: 12px;
+}
+
+.nav-tabs .nav-link.active{
+    color: #f4623a;
+}
+
+.fa-trash-alt{
+    color:#696969;
+    font-size: 0.8em;
+}
+
+.btn-outline-secondary{
+    background-color: #f4f4f4;
+    color: #f4623a;
+}
+
+.subtitle{
+    font-weight: bold;
+}
+
+.card{
+    border-color:#f4623a;
+}
+
+.userIconWaku{
+    border: 2px solid #f4623a;
+    background-color: #f4f4f4;
+}
+
+.card-header{
+    background-color:#f4623a;
+}
+
+.border-bottom{
+    border-bottom: solid 2px #f4623a !important;
+}
+
+
 .balloon {
 position: relative;
 background-color: #ffc4c4;
@@ -38,13 +79,37 @@ margin: 0;
 padding: 0;
 }
 
-
-
-.wakumoji{
-    position: relative;
+// コミュニティ一覧画面の右側
+.starBotton{
+    border: none; 
+    background: none;
 }
 
-.wakumoji::before {
+.fa-star{
+    color: yellow;
+    font-size: 0.8em;
+}
+
+.current-author{
+    background-color:#e3f7be;
+    font-size: 5px;
+}
+
+.author{
+    font-size: 5px;
+    color: white;
+}
+// 以上
+
+// コミュニティ一覧画面の作成項目
+.waku{
+    position: relative;
+    border: 2px solid #f4623a;
+    border-radius: 5px;
+    background-color:#f5f5f5;
+}
+
+.waku::before {
     content: '\f0c0';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
@@ -54,7 +119,7 @@ padding: 0;
     top: -12px;
 }
 
-.wakumoji::after{
+.waku::after{
     content: "コミュニティ作成";
     font-weight: bold;
     position: absolute;
@@ -64,14 +129,17 @@ padding: 0;
     top: -12px;
     font-size:15px;
 }
+// 以上
 
-
-
-.wakumoji2{
+// コミュニティ一覧画面の並び替え&検索項目
+.waku2{
     position: relative;
+    border: 2px solid #f4623a;
+    border-radius: 5px;
+    background-color:#f5f5f5;
 }
 
-.wakumoji2::before{
+.waku2::before{
     content: '\f002';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
@@ -81,8 +149,8 @@ padding: 0;
     top: -12px;
 }
 
-.wakumoji2::after{
-    content: "検索";
+.waku2::after{
+    content: "並び替え&検索";
     font-weight: bold;
     position: absolute;
     background-color: #f4f4f4;
@@ -91,23 +159,18 @@ padding: 0;
     top: -12px;
     font-size:15px;
 }
+// 以上
 
 
-.subtitle{
-/*background: rgb(255,255,255);*/
-/*background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(244,98,58,1) 59%);*/
-/*-webkit-background-clip: text;*/
-/*color: transparent;*/
-font-weight:bold;
-    
-}
-
-
-.wakumoji3{
+// レス一覧画面の投稿項目
+.waku3{
     position: relative;
+    border: 2px solid #f4623a;
+    border-radius: 5px;
+    background-color:#f5f5f5;
 }
 
-.wakumoji3::before {
+.waku3::before {
     content: '\f27a';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
@@ -117,7 +180,7 @@ font-weight:bold;
     top: -12px;
 }
 
-.wakumoji3::after{
+.waku3::after{
     content: "投稿";
     font-weight: bold;
     position: absolute;
@@ -127,13 +190,17 @@ font-weight:bold;
     top: -12px;
     font-size:15px;
 }
+// 以上
 
-
-.wakumoji4{
+// レス一覧画面の並び替え項目
+.waku4{
     position: relative;
+    border: 2px solid #f4623a;
+    border-radius: 5px; 
+    background-color:#f5f5f5;
 }
 
-.wakumoji4::before {
+.waku4::before {
     content: '\f002';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
@@ -143,8 +210,8 @@ font-weight:bold;
     top: -12px;
 }
 
-.wakumoji4::after{
-    content: "検索";
+.waku4::after{
+    content: "並び替え";
     font-weight: bold;
     position: absolute;
     background-color: #f4f4f4;
@@ -153,6 +220,19 @@ font-weight:bold;
     top: -12px;
     font-size:15px;
 }
+// 以上
+
+// レス一覧画面の右側&個人画面レス一覧画面
+.waku5{
+    border: 2px solid #f4623a;
+    border-radius: 5px;
+    background-color:#f5f5f5; 
+    height: 100%;
+}
+// 以上
+
+
+
 /*.fa-link::before {*/
 /*    content: "\f002";*/
 /*    font-weight: 400;*/
@@ -176,22 +256,32 @@ font-weight:bold;
 /*  text-rendering: auto;*/
 /*  line-height: 1;*/
 /*}*/
-.navstyle1{
-  font-weight:700;
-  color:rgba(255, 255, 255, 0.7)!important; 
-}
 
-.navstyle1:hover{
-  color:rgba(255, 255, 255, 1)!important;
-}
 
-.navstyle2{
-  font-weight:700;
-  font-size: 0.9rem;
-  color:rgba(255, 255, 255, 0.7);
-}
+// .navstyle1{
+//   font-weight:700;
+//   color:rgba(255, 255, 255, 0.7)!important;
+//   &:hover{
+//     color:rgba(255, 255, 255, 1)!important;
+//   }
+// }
 
-.navstyle2:hover{
-  color:rgba(255, 255, 255, 1);
-}
+
+
+// .navstyle1:hover{
+//   color:rgba(255, 255, 255, 1)!important;
+// }
+
+// .navstyle2{
+//   font-weight:700;
+//   font-size: 0.9rem;
+//   color:rgba(255, 255, 255, 0.7);
+//   &hover{
+//     color:rgba(255, 255, 255, 1);
+//   }
+// }
+
+// .navstyle2:hover{
+//   color:rgba(255, 255, 255, 1);
+// }
 

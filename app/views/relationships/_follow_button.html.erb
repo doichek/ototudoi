@@ -2,12 +2,12 @@
   <% if current_user.following?(user) %>
     <%= form_with(model: current_user.relationships.find_by(follow_id: user.id), local: true, method: :delete, :class => "d-inline") do |f| %>
       <%= hidden_field_tag :follow_id, user.id %>
-      <%= f.submit 'アンフォロー', class: 'btn btn-danger rounded-pill', :style => "float: right;"%>
+      <%= f.submit 'フォロー中', class: 'btn btn-secondary rounded-pill', :style => "float: right;"%>
     <% end %>
   <% else %>
     <%= form_with(model: current_user.relationships.build, local: true, :class => "d-inline") do |f| %>
       <%= hidden_field_tag :follow_id, user.id %>
-      <%= f.submit 'フォロー', class: 'btn btn-primary rounded-pill', :style => "float: right;" %>
+      <%= f.submit 'フォロー', class: 'btn btn-outline-secondary rounded-pill', :style => "float: right;" %>
     <% end %>
   <% end %>
 <% end %>

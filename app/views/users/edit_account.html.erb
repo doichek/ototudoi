@@ -1,4 +1,3 @@
-
 <div class="text-center">
   <h1 style="font-weight:bold;">アカウント編集</h1>
 </div>
@@ -10,26 +9,26 @@
       <%= render 'layouts/error_messages', model: f.object %>
       
       <div class="form-group">
-        <%= f.label :name, '名前', :style => "border-bottom:solid 2px #f4623a;" %>
+        <%= f.label :name, '名前', :class => "border-bottom" %>
         <%= f.text_field :name, class: 'form-control' %>
       </div>
-
+      
       <div class="form-group">
-        <%= f.label :email, 'メールアドレス', :style => "border-bottom:solid 2px #f4623a;" %>
+        <%= f.label :email, 'メールアドレス', :class => "border-bottom" %>
         <%= f.email_field :email, class: 'form-control' %>
       </div>
-
+      
       <div class="form-group">
-        <%= f.label :password, 'パスワード', :style => "border-bottom:solid 2px #f4623a;" %>
+        <%= f.label :password, 'パスワード', :class => "border-bottom" %>
         <%= f.password_field :password, class: 'form-control' %>
       </div>
-
+      
       <div class="form-group">
-        <%= f.label :password_confirmation, 'パスワード(確認)', :style => "border-bottom:solid 2px #f4623a;"%>
+        <%= f.label :password_confirmation, 'パスワード(確認)', :class => "border-bottom"%>
         <%= f.password_field :password_confirmation, class: 'form-control' %>
       </div>
-  
-      <%= f.submit '更新', class: 'btn rounded-pill btn-block', :style => "background-color:#f4623a; color:white;" %>
+      
+      <%= f.submit '更新', class: 'btn rounded-pill btn-primary btn-block' %>
     <% end %>
     
   </div>

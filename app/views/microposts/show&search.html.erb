@@ -1,0 +1,152 @@
+<% if @topic.tag == 0 %>
+　<span class="badge badge-secondary">全般</span>
+<% elsif @topic.tag == 1 %>
+　<span class="badge badge-secondary">beatmania</span>
+<% elsif @topic.tag == 2 %>
+  <span class="badge badge-secondary">popn music</span>
+<% elsif @topic.tag == 3 %>
+  <span class="badge badge-secondary">Dance Dance Revolution</span>
+<% elsif @topic.tag == 4 %>
+  <span class="badge badge-secondary">GITADORA</span>
+<% elsif @topic.tag == 5 %>
+  <span class="badge badge-secondary">jubeat</span>
+<% elsif @topic.tag == 6 %>
+  <span class="badge badge-secondary">SOUND VOLTEX</span>
+<% elsif @topic.tag == 7 %>
+  <span class="badge badge-secondary">DANCERUSH STARDOM</span>
+<% elsif @topic.tag == 8 %>
+  <span class="badge badge-secondary">太鼓の達人</span>
+<% elsif @topic.tag == 9 %>
+  <span class="badge badge-secondary">maimai</span>
+<% elsif @topic.tag == 10 %>
+  <span class="badge badge-secondary">CHUNITHM</span>
+<% elsif @topic.tag == 11 %>
+  <span class="badge badge-secondary">オンゲキ</span>
+<% elsif @topic.tag == 12 %>
+  <span class="badge badge-secondary">グルーヴコースター</span>
+<% elsif @topic.tag == 13 %>
+  <span class="badge badge-secondary">WACCA</span>
+<% elsif @topic.tag == 14 %>
+  <span class="badge badge-secondary">Cytus</span>
+<% elsif @topic.tag == 15 %>
+  <span class="badge badge-secondary">Deemo</span>
+<% elsif @topic.tag == 16 %>
+  <span class="badge badge-secondary">VOEZ</span>
+<% elsif @topic.tag == 17 %>
+  <span class="badge badge-secondary">アイドルマスター シンデレラガールズ スターライトステージ</span>
+<% elsif @topic.tag == 18 %>
+  <span class="badge badge-secondary">ラブライブ! スクールアイドルフェスティバル</span>
+<% elsif @topic.tag == 19 %>
+  <span class="badge badge-secondary">バンドリ! ガールズバンドパーティ!</span>
+<% elsif @topic.tag == 20 %>
+  <span class="badge badge-secondary">D4DJ Groovy Mix</span>
+<% elsif @topic.tag == 21 %>
+  <span class="badge badge-secondary">プロジェクトセカイ カラフルステージ! feat.初音ミク</span>
+<% elsif @topic.tag == 22 %>
+  <span class="badge badge-secondary">その他</span>
+<% end %>
+
+<h1 class="mb-3 subtitle"><%= @topic.title %></h1>
+<div class="row">
+  
+  <!--画面左側-->
+  <div class="col-sm-4">
+    <!--投稿項目-->
+    <aside class="p-3 waku3 form-group">
+      <%= form_with(model: @micropost, local: true) do |f| %>
+        <%= f.text_area :content, class: 'form-control', rows: 5 %>
+        <!--「@micropost.topic_id」をパラメータとしてmicroposts#CREATEに渡す処理-->
+        <%= f.hidden_field :topic_id, :value => @micropost.topic_id %>
+        <%= f.file_field :image, :style => "font-size:12px"; %>
+        <%= f.text_field :youtube_url, class: 'form-control', placeholder: 'youtube_url' %>
+        <!--未ログイン時アラートを鳴らす-->
+        <% if logged_in? %>
+          <%= f.submit '投稿', class: 'btn btn-block btn-primary rounded-pill' %>
+        <% else %>
+          <a class="btn btn-block btn-primary rounded-pill" id = "alart" href="#">投稿</a>
+        <% end %> 
+      <% end %>
+    </aside>
+    <!--並び替え項目-->
+    <aside class="p-3 waku4 form-group">
+      <%= form_with(url: search_micropost_path(id: @micropost.topic_id), method: :get, local: true) do |f| %>
+        <%= f.select :keyword, [['投稿日が新しい順', 'new'],['投稿日が古い順', 'old']] ,{selected: params[:keyword]}, { class: 'form-control'}%>
+        <%= f.submit '更新', class: 'btn btn-block btn-primary rounded-pill'%>
+      <% end %>
+    </aside>
+  </div>
+  
+  <!--画面右側-->
+  <div class="col-sm-8">
+    <ul class="list-unstyled waku5 pl-3">
+      <div class="form-inline">
+        <% if !@microposts.any? %>
+          何も投稿されていません
+        <% end %>
+              
+        <% @microposts.each do |micropost| %>
+          <!--ユーザ画像の表示-->
+          <% if micropost.user.image? && ( micropost.delete_frag != 1 ) %>
+            <%= image_tag micropost.user.image.url, class: 'rounded img-fluid mr-2', size: '50', alt: "ユーザ画像"  %>
+          <% else %>
+            <%= image_tag "no-image.jpg", class: 'rounded img-fluid mr-2', size: '50', alt: "デフォルト画像" %>
+          <% end %> 
+          
+          <li class="balloon mb-0">
+            <!--投稿が削除されている場合-->
+            <% if micropost.delete_frag == 1 %>
+              <p>投稿が削除されています</p>
+            <% else %>
+              <!--ユーザ名と投稿日の表示　・ログインユーザと投稿者が一致する場合・ログインはしているけど投稿者と不一致の場合・未ログインの場合-->
+              <% if current_user == micropost.user %>
+                <%= link_to micropost.user.name, user_path(micropost.user) , :style => "background-color:#e3f7be;"%>
+                <span class="text-muted" style="font-size:5px;">投稿日:<%= micropost.created_at.strftime('%Y/%m/%d %H:%M') %></span>
+              <% elsif logged_in? %>
+                <%= link_to micropost.user.name, user_path(micropost.user) %> 
+                <span class="text-muted" style="font-size:5px;">投稿日:<%= micropost.created_at.strftime('%Y/%m/%d %H:%M') %></span>
+              <% else %>
+                <a id = "alart5" href="#"><%= micropost.user.name %></a>
+                <span class="text-muted" style="font-size:5px;">投稿日:<%= micropost.created_at.strftime('%Y/%m/%d %H:%M') %></span>
+              <% end %>
+              
+              <!--ごみ箱アイコンの表示  -->
+              <% if current_user == micropost.user %>
+                <%= link_to micropost, :method => :delete , data: { confirm: "本当に削除しますか?" } do %>
+                  <i class="fas fa-trash-alt"></i>
+                <% end %>
+              <% end %>
+              
+              <!--文字の投稿-->
+              <% if micropost.content? %>
+                <p style="white-space:pre-line"><%= micropost.content %></p>
+              <% end %>
+              
+              <!--画像の投稿-->
+              <% if micropost.image? %>
+                <%= image_tag micropost.image.url, class: 'rounded img-fluid d-block', size: '250', alt: "投稿画像"  %>
+              <% end %>
+              
+              <!--YouTubeの投稿-->
+              <% if micropost.youtube_url? %>
+                <iframe src="https://www.youtube.com/embed/<%= micropost.youtube_url[32..42] %>", class="d-block", allow= "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture", allowfullscreen="", frameborder="0", height="250", width="100%"></iframe> </iframe>
+              <% end %>
+              
+            <% end %>
+          </li>
+        <% end %>
+      </div>
+      <%= paginate @microposts %>
+    </ul>
+  </div>
+  
+</div>
+
+<script>
+  $('#alart').click(function() {
+    alert('ログインが必要です');
+  });
+        
+  $('#alart5').click(function() {
+    alert('ログインが必要です');
+  });
+</script>

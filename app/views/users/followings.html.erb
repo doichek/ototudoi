@@ -1,23 +1,29 @@
 <div class="row">
+  
   <aside class="col-sm-4">
-    <div class="card" style="border:2px solid #f4623a;">
-      <div class="card-header" style="background-color:#f4623a; color:white;">
+    <div class="card userIconWaku">
+      <div class="card-header text-light">
         <h3 class="card-title d-inline"><%= @user.name %></h3>
         <%= render 'relationships/follow_button', user: @user %>
       </div>
       <div class="card-body">
-        <!--<img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">-->
-        <%= image_tag "no-image.jpg", class: 'rounded img-fluid', size: '500', alt: "てすと画像" %>
+        <% if @user.image? %>
+          <%= image_tag @user.image.url, class: 'rounded img-fluid', size: '500', alt: "ユーザ画像"  %>
+        <% else %>
+          <%= image_tag "no-image.jpg", class: 'rounded img-fluid', size: '500', alt: "デフォルト画像" %>
+        <% end %> 
       </div>
     </div>
   </aside>
+  
   <div class="col-sm-8">
     <ul class="nav nav-tabs nav-justified mb-3">
-      <li class="nav-item"><a href="<%= posts_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(posts_user_path(@user)) %>">コミュニティ  </a></li>
-      <li class="nav-item"><a href="<%= user_path(@user) %>" class="nav-link <%= 'active' if current_page?(user_path(@user)) %>">プロフィール  </a></li>
-      <li class="nav-item"><a href="<%= followings_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followings_user_path(@user)) %>">フォロー  <span class="badge badge-secondary"><%= @count_followings %></span></a></li>
-      <li class="nav-item"><a href="<%= followers_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followers_user_path(@user)) %>">フォロワー  <span class="badge badge-secondary"><%= @count_followers %></span></a></li>
+      <li class="nav-item"><a href="<%= posts_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(posts_user_path(@user)) %>">コミュニティ</a></li>
+      <li class="nav-item"><a href="<%= user_path(@user) %>" class="nav-link <%= 'active' if current_page?(user_path(@user)) %>">プロフィール</a></li>
+      <li class="nav-item"><a href="<%= followings_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followings_user_path(@user)) %>">フォロー<span class="badge badge-secondary"><%= @count_followings %></span></a></li>
+      <li class="nav-item"><a href="<%= followers_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followers_user_path(@user)) %>">フォロワー<span class="badge badge-secondary"><%= @count_followers %></span></a></li>
     </ul>
     <%= render 'users', users: @followings %>
   </div>
+  
 </div>

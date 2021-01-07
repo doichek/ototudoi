@@ -1,0 +1,209 @@
+<h1 class="mb-4 subtitle">コミュニティ一覧</h1>
+<div class="row">
+  
+  <!--画面左側-->
+  <div  class="col-sm-4">
+    <!--作成項目-->
+    <aside class="p-3 waku form-group">
+      <%= form_with(model: @topic, local: true) do |f| %>
+        <%= f.text_field :title, :placeholder => "コミュニティ名", class: 'form-control' %>
+        <%= f.select :tag, 
+        [
+          ['全般', '0'],
+          ['beatmania', '1'],
+          ['popn music', '2'],
+          ['Dance Dance Revolution', '3'],
+          ['GITADORA', '4'],
+          ['jubeat', '5'],
+          ['SOUND VOLTEX', '6'],
+          ['DANCERUSH STARDOM', '7'],
+          ['太鼓の達人', '8'],
+          ['maimai', '9'],
+          ['CHUNITHM', '10'],
+          ['オンゲキ', '11'],
+          ['グルーヴコースター', '12'],
+          ['WACCA', '13'],
+          ['Cytus', '14'],
+          ['Deemo', '15'],
+          ['VOEZ', '16'],
+          ['アイドルマスター シンデレラガールズ スターライトステージ', '17'],
+          ['ラブライブ! スクールアイドルフェスティバル', '18'],
+          ['バンドリ! ガールズバンドパーティ!', '19'],
+          ['D4DJ Groovy Mix', '20'],
+          ['プロジェクトセカイ カラフルステージ! feat.初音ミク', '21'],
+          ['その他', '22']
+        ] ,{selected: '99'}, { class: 'form-control'} %>
+        <!--未ログイン時アラート鳴らす-->
+        <% if logged_in? %>
+          <%= f.submit '作成', class: 'btn btn-block btn-primary rounded-pill'%>
+        <% else %>
+          <a class="btn btn-block btn-primary rounded-pill" id = "alart" href="#">作成</a>
+        <% end %> 
+      <% end %>
+    </aside>
+    <!--並び替え&検索項目-->
+    <aside class="p-3 waku2 form-group">
+      <%= form_with(url: search_topics_path, method: :get, local: true) do |f| %>
+        <%= f.select :keyword, [['コミュニティ作成日が新しい順', 'new'],['コミュニティ作成日が古い順', 'old']] ,{selected: params[:keyword]}, { class: 'form-control'}%>
+        <%= f.text_field :name, :placeholder => "コミュニティ名で検索", value: params[:name], class: 'form-control' %>
+        <%= f.check_box :favorite ,  {checked: (params[:favorite] == "1")} %>
+        <%= f.label :favorite, "お気に入りのみ表示" %>
+        <%= f.select :tag, 
+          [
+            ['すべてのタグ', '99'],
+            ['全般', '0'],
+            ['beatmania', '1'],
+            ['popn music', '2'],
+            ['Dance Dance Revolution', '3'],
+            ['GITADORA', '4'],
+            ['jubeat', '5'],
+            ['SOUND VOLTEX', '6'],
+            ['DANCERUSH STARDOM', '7'],
+            ['太鼓の達人', '8'],
+            ['maimai', '9'],
+            ['CHUNITHM', '10'],
+            ['オンゲキ', '11'],
+            ['グルーヴコースター', '12'],
+            ['WACCA', '13'],
+            ['Cytus', '14'],
+            ['Deemo', '15'],
+            ['VOEZ', '16'],
+            ['アイドルマスター シンデレラガールズ スターライトステージ', '17'],
+            ['ラブライブ! スクールアイドルフェスティバル', '18'],
+            ['バンドリ! ガールズバンドパーティ!', '19'],
+            ['D4DJ Groovy Mix', '20'],
+            ['プロジェクトセカイ カラフルステージ! feat.初音ミク', '21'],
+            ['その他', '22']
+          ] ,{selected: params[:tag]}, { class: 'form-control'}%>
+        <%= f.submit '更新', class: 'btn btn-block btn-primary rounded-pill' %>
+      <% end %>
+    </aside>
+  </div>
+  
+  <!--画面右側-->
+  <div class="col-sm-8">
+    <% @topics.each do |topic| %>
+      <div class="card mb-3 shadow-lg">
+        <div class="card-header pt-0 pb-0">
+          <!--お気に入りボタン　※登録している場合-->
+          <% if logged_in? && current_user.likes?(topic) %>
+            <%= form_with(model: current_user.favorites.find_by(topic_id: topic.id), local: true, method: :delete, :class => "d-inline") do |f| %>
+              <%= hidden_field_tag :topic_id, topic.id %>
+              <%= f.button :type => "submit" , :class => "starBotton" do %>
+                <i class='fas fa-star'></i>
+              <% end %>
+            <% end %>
+          <!--お気に入りボタン　※登録していない場合-->
+          <% elsif logged_in? %>
+            <%= form_with(model: current_user.favorites.build, local: true, :class => "d-inline") do |f| %>
+              <%= hidden_field_tag :topic_id, topic.id %>
+              <%= f.button :type => "submit", :class => "starBotton" do %>
+                <i class='far fa-star'></i>
+              <% end %>
+            <% end %>
+          <% else %>
+          <!--お気に入りボタン　※未ログイン用のダミー-->
+            <a class= "d-inline starBotton" id = "alart3" href="#">
+              <i class='far fa-star'></i>
+            </a>
+          <% end %>
+          
+          <% if topic.tag == 0 %>
+            <%= link_to "全般", search_topics_path(tag: 0, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>  
+        　<% elsif topic.tag == 1 %>
+            <%= link_to "beatmania", search_topics_path(tag: 1, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 2 %>
+            <%= link_to "popn music", search_topics_path(tag: 2, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 3 %>
+            <%= link_to "Dance Dance Revolution", search_topics_path(tag: 3, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 4 %>
+            <%= link_to "GITADORA", search_topics_path(tag: 4, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 5 %>
+            <%= link_to "jubeat", search_topics_path(tag: 5, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>  
+          <% elsif topic.tag == 6 %>
+            <%= link_to "SOUND VOLTEX", search_topics_path(tag: 6, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 7 %>
+            <%= link_to "DANCERUSH STARDOM", search_topics_path(tag: 7, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 8 %>
+            <%= link_to "太鼓の達人", search_topics_path(tag: 8, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 9 %>
+            <%= link_to "maimai", search_topics_path(tag: 9, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 10 %>
+            <%= link_to "CHUNITHM", search_topics_path(tag: 10, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 11 %>
+            <%= link_to "オンゲキ", search_topics_path(tag: 11, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 12 %>
+            <%= link_to "グルーヴコースター", search_topics_path(tag: 12, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 13 %>
+            <%= link_to "WACCA", search_topics_path(tag: 13, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 14 %>
+            <%= link_to "Cytus", search_topics_path(tag: 14, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 15 %>
+            <%= link_to "Deemo", search_topics_path(tag: 15, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 16 %>
+            <%= link_to "VOEZ", search_topics_path(tag: 16, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 17 %>
+            <%= link_to "アイドルマスター シンデレラガールズ スターライトステージ", search_topics_path(tag: 17, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 18 %>
+            <%= link_to "ラブライブ! スクールアイドルフェスティバル", search_topics_path(tag: 18, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 19 %>
+            <%= link_to "バンドリ! ガールズバンドパーティ!", search_topics_path(tag: 19, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 20 %>
+            <%= link_to "D4DJ Groovy Mix", search_topics_path(tag: 20, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 21 %>
+            <%= link_to "プロジェクトセカイ カラフルステージ! feat.初音ミク", search_topics_path(tag: 21, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% elsif topic.tag == 22 %>
+            <%= link_to "その他", search_topics_path(tag: 22, keyword: "new", favorite: 0, name: ""), :class => "badge badge-secondary" %>
+          <% end %>
+            
+          <div style="float: right;">
+            <span class="author">作成者:</span>
+            <!--作成者画像-->
+            <% if topic.user.image? %>
+              <%= image_tag topic.user.image.url, class: 'rounded img-fluid', size: '15', alt: "ユーザ画像"  %>
+            <% else %>
+              <%= image_tag "no-image.jpg", class: 'rounded img-fluid', size: '15', alt: "デフォルト画像" %>
+            <% end %>  
+            <!--作成者名-->
+            <% if current_user == topic.user %>
+              <%= link_to topic.user.name, user_path(topic.user), :class => "current-author" %>
+            <% elsif logged_in? %>
+              <%= link_to topic.user.name, user_path(topic.user), :class => "author" %>
+            <% else %>
+              <a class= "author" id = "alart2" href="#"><%= topic.user.name %></a>
+            <% end %>
+            <!--ごみ箱ボタン-->
+            <% if current_user == topic.user %>
+              <%= link_to topic, :method => :delete , data: { confirm: "本当に削除しますか?" } do %>
+                <i class="fas fa-trash-alt ml-1"></i>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+        <a class="card-body pt-1 pb-1" href="<%= micropost_path( topic.id ) %>" style="text-decoration: none;" onMouseOut="this.style.opacity='1'" onMouseOver="this.style.opacity='0.5'">
+          <h4 class="card-title text-dark"><%= topic.title %></h4>
+          <p class="card-text">
+            <spna class="text-muted">投稿数:<%= topic.microposts.count %></spna> 
+            <span class="text-muted">最終投稿日時:<%= topic.microposts.last&.created_at&.strftime('%Y/%m/%d %H:%M')%></span>
+          </p>
+        </a>
+      </div>
+    <% end %>
+    <%= paginate @topics %>
+  </div>
+  
+</div>
+       
+<script>
+  $('#alart3').click(function() {
+    alert('ログインが必要です');
+  });
+     
+  $('#alart2').click(function() {
+    alert('ログインが必要です');
+  });      
+  
+  $('#alart').click(function() {
+    alert('ログインが必要です');
+  });
+</script>
