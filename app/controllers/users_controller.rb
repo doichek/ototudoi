@@ -51,7 +51,7 @@ class UsersController < ApplicationController
   def create
     @path = Rails.application.routes.recognize_path(request.referer)
     #個人コミュニティからの投稿
-    if @path[:action] == "posts" or "search"
+    if (@path[:action] == "posts") or (@path[:action] == "search")
       @topic = Topic.find_by(user_id: params[:id], flag: 1)
       @micropost = @topic.microposts.build(micropost_params)
       @path = Rails.application.routes.recognize_path(request.referer)
@@ -70,10 +70,11 @@ class UsersController < ApplicationController
     #アカウントの登録
     else
       @user = User.new(user_params)
-      @topic = @user.topics.build(title: "#{@user.name}のコミュニティ", flag: 1)
+      @user.topics.build(title: "#{@user.name}のコミュニティ", flag: 1)
       if @user.save
-        flash[:success] = 'ユーザを登録しました。'
-        redirect_to @user
+        session[:user_id] = @user.id
+        flash[:success] = 'ユーザを登録し、ログインしました。'
+        redirect_to topics_url
       else
         flash.now[:danger] = 'ユーザの登録に失敗しました。'
         render :new
@@ -122,11 +123,21 @@ class UsersController < ApplicationController
   end
   
   def user_params2
-    params.require(:user).permit(:content, :sex, :address, :content2, :content3, :content4, :image)
+    params.require(:user).permit(:content, :sex, :age, :address, :content2, :content3, :content4, :image)
   end
 
   def micropost_params
     params.require(:micropost).permit(:content,:image,:youtube_url).merge(user_id: current_user.id)
   end
 
+  def login(email, password)
+    @user = User.find_by(email: email)
+    if @user && @user.authenticate(password)
+      session[:user_id] = @user.id
+      return true
+    else
+      return false
+    end
+  end
+  
 end

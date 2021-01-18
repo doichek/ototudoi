@@ -17,7 +17,7 @@
       </div>
     </aside>
     
-    <aside class="p-3 waku3 form-group">
+    <aside class="p-3 waku3 form-group PC">
       <%= form_with(model: @micropost, url: user_path, method: :post, local: true) do |f| %>
         <%= f.text_area :content, class: 'form-control', rows: 5 %>
         <!--「@micropost.topic_id」をパラメータとしてmicroposts#CREATEに渡す処理-->
@@ -28,7 +28,7 @@
       <% end %>
     </aside>
       
-    <aside class="p-3 waku4 form-group">
+    <aside class="p-3 waku4 form-group PC">
       <%= form_with(url: search_user_path(id: @topic.user_id), method: :get, local: true) do |f| %>
         <%= f.select :keyword, [['投稿日が新しい順', 'new'],['投稿日が古い順', 'old']] ,{selected: params[:keyword]}, { class: 'form-control'}%>
         <%= f.submit '更新', class: 'btn btn-block btn-primary rounded-pill' %>
@@ -47,28 +47,53 @@
     
     <h1 class="subtitle"><%= @topic.title %></h1>
     <p>※コミュニティ一覧には表示されない独自のコミュニティです。</p>
-      <ul class="list-unstyled waku5 pl-3">
-        <div class="form-inline">
-          <% if !@microposts.any? %>
-            何も投稿されていません
-          <% end %>
+
+<!--スマホの場合のみ表示-->
+    <aside class="p-3 waku3 form-group SF" style="display:none;">
+      <%= form_with(model: @micropost, url: user_path, method: :post, local: true) do |f| %>
+        <%= f.text_area :content, class: 'form-control', rows: 5 %>
+        <!--「@micropost.topic_id」をパラメータとしてmicroposts#CREATEに渡す処理-->
+        <%= f.hidden_field :topic_id, :value => @micropost.topic_id %>
+        <%= f.file_field :image, :style => "font-size:12px"; %>
+        <%= f.text_field :youtube_url, class: 'form-control', placeholder: 'youtube_url' %>
+        <%= f.submit '投稿', class: 'btn btn-block rounded-pill btn-primary' %>
+      <% end %>
+    </aside>
+      
+    <aside class="p-3 waku4 form-group SF" style="display:none;">
+      <%= form_with(url: search_user_path(id: @topic.user_id), method: :get, local: true) do |f| %>
+        <%= f.select :keyword, [['投稿日が新しい順', 'new'],['投稿日が古い順', 'old']] ,{selected: params[:keyword]}, { class: 'form-control'}%>
+        <%= f.submit '更新', class: 'btn btn-block btn-primary rounded-pill' %>
+      <% end %>
+    </aside>
+<!--スマホの場合のみ表示(終わり)-->
+
+    <ul class="list-unstyled waku5 pl-3">
+    
+      <% if !@microposts.any? %>
+        何も投稿されていません
+      <% end %>
+      
+      <% @microposts.each do |micropost| %>
+      <li class="balloon mb-0 mt-2">
+        <!--ユーザ画像の表示-->
+        <% if micropost.user.image? && micropost.delete_frag != 1 %>
+          <%= image_tag micropost.user.image.url, class: 'rounded img-fluid mr-3', size: '40', alt: "ユーザ画像"  %>
+        <% else %>
+          <%= image_tag "no-image.jpg", class: 'rounded img-fluid mr-3', size: '40', alt: "デフォルト画像" %>
+        <% end %>
+      
+        <div class="says"> 
+          <!--投稿が削除されている場合-->
+          <% if micropost.delete_frag == 1 %>
+            <p>投稿が削除されています</p>
+          <% else %>
           
-          <% @microposts.each do |micropost| %>
-            <!--ユーザ画像の表示-->
-            <% if micropost.user.image? && micropost.delete_frag != 1 %>
-              <%= image_tag micropost.user.image.url, class: 'rounded img-fluid mr-2', size: '50', alt: "ユーザ画像"  %>
-            <% else %>
-              <%= image_tag "no-image.jpg", class: 'rounded img-fluid mr-2', size: '50', alt: "デフォルト画像" %>
-            <% end %>
-          
-            <li class="balloon mb-0">
-              <!--投稿が削除されている場合-->
-              <% if micropost.delete_frag == 1 %>
-                <p>投稿が削除されています</p>
-              <% else %>
+            <div>
+              <div class="d-inline">
                 <!--ユーザ名  ・ログインユーザと投稿者が一致する場合-->
                 <% if current_user == micropost.user %>
-                  <%= link_to micropost.user.name, user_path(micropost.user) , :style => "background-color:#e3f7be;"%> 
+                  <%= link_to micropost.user.name, user_path(micropost.user) , :class => "current-author" %> 
                   <span class="text-muted" style="font-size:5px;">投稿日:<%= micropost.created_at.strftime('%Y/%m/%d %H:%M') %></span>
                 <% else %>
                   <%= link_to micropost.user.name, user_path(micropost.user) %> 
@@ -81,7 +106,8 @@
                     <i class="fas fa-trash-alt"></i>
                   <% end %>
                 <% end %>
-                
+              </div>
+              <div class="d-block">
                 <!--文字の投稿-->
                 <% if micropost.content? %>
                  <p style="white-space:pre-line"><%= micropost.content %></p>
@@ -89,20 +115,22 @@
                 
                 <!--画像の投稿-->
                 <% if micropost.image? %>
-                  <%= image_tag micropost.image.url, class: 'rounded img-fluid d-block', size: '250', alt: "投稿画像"  %>
+                  <%= image_tag micropost.image.url, class: 'img-fluid', size: '250', alt: "投稿画像"  %>
                 <% end %>
                 
                  <!--YouTubeの投稿-->
                 <% if micropost.youtube_url? %>
-                  <iframe src="https://www.youtube.com/embed/<%= micropost.youtube_url[32..42] %>", class="d-block", allow= "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture", allowfullscreen="", frameborder="0", height="250", width="100%"></iframe> </iframe>
+                  <iframe src="https://www.youtube.com/embed/<%= micropost.youtube_url[32..42] %>", allow= "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture", allowfullscreen="", frameborder="0", height="250", width="100%"></iframe> </iframe>
                 <% end %>
-                
-              <% end %>  
-            </li>
+              </div>
+            </div>
+            
           <% end %>
-        </div>
-        <%= paginate @microposts %>
-      </ul>
+        </div> 
+      </li>
+      <% end %>
+      <%= paginate @microposts %>
+    </ul>
   </div>
   
 </div>

@@ -1,4 +1,5 @@
 <%= form_with(model: @user, local: true) do |f| %>
+<%= render 'layouts/error_messages', model: f.object %>
 <div class="row">
   <aside class="col-sm-4">
     <div class="card userIconWaku">
@@ -18,9 +19,6 @@
   </aside>
 
   <div class="col-sm-8">
-    <!--<ul class="nav nav-tabs nav-justified mb-3">-->
-    <!--  <li class="nav-item nav-link active">プロフィール編集</li>-->
-    <!--</ul>-->
     
      <ul class="nav nav-tabs nav-justified mb-3">
       <li class="nav-item"><a href="<%= posts_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(posts_user_path(@user)) %>">コミュニティ</a></li>
@@ -28,53 +26,59 @@
       <li class="nav-item"><a href="<%= followings_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followings_user_path(@user)) %>">フォロー<span class="badge badge-secondary"><%= @count_followings %></span></a></li>
       <li class="nav-item"><a href="<%= followers_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followers_user_path(@user)) %>">フォロワー<span class="badge badge-secondary"><%= @count_followers %></span></a></li>
     </ul>
+      
+      
+    <table class="table table-striped table-bordered">
+      <tbody>
+
+      <tr>
+        <td colspan="2">自己紹介</td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= f.text_area :content, :class => "form-control" %></td>
+      </tr>
+      
+      <tr>
+        <td>性別</td>
+        <td>年齢<span style="font-size:3px;">※半角数値で入力してください</span></td>
+      </tr>
+
+      <tr>
+        <td><%= f.select :sex, [['非公開', '0'],['男性', '1'],['女性', '2']] ,{selected: @user.sex}, { class: 'form-control'} %></td>
+        <td><%= f.text_field :age, :class => 'form-control' %></td>
+      </tr>
+
+      <tr>
+        <td colspan="2">居住地</td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= f.text_field :address, :class => "form-control" %></td>
+      </tr>
+      
+      <tr>
+        <td colspan="2">プレイしている音ゲー</td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= f.text_area :content2, :class => "form-control" %></td>
+      </tr>
+      
+      <tr>
+        <td colspan="2">プレイ環境</td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= f.text_area :content3, :class => "form-control" %></td>
+      </tr>
+      
+      <tr>
+        <td colspan="2">好きな楽曲・譜面</td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= f.text_area :content4, :class => "form-control" %></td>
+      </tr>
+      
+      </tbody>
+    </table>
     
-   
-    <form style="font-size:15px;">
-      
-      <div class="form-group row">
-        <label for="inputContent" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">自己紹介</label>
-        <div class="col-sm-10">
-          <%= f.text_area :content, :class => "form-control" %>
-        </div>
-      </div>
-      
-      <div class="form-group row">
-        <label for="staticSex" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">性別</label>
-        <div class="col-sm-10">
-          <%= f.select :sex, [['非公開', '0'],['男性', '1'],['女性', '2']] ,{selected: @user.sex}, { class: 'form-control mb-3'}%>
-        </div>
-      </div>
-      
-      <div class="form-group row">
-        <label for="inputAddress" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">居住地</label>
-        <div class="col-sm-10">
-          <%= f.text_area :address, :class => "form-control" %>
-        </div>
-      </div>
-      
-      <div class="form-group row">
-        <label for="inputContent2" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">プレイしている音ゲー</label>
-        <div class="col-sm-10">
-          <%= f.text_area :content2, :class => "form-control" %>
-        </div>
-      </div>
-      
-      <div class="form-group row">
-        <label for="inputContent3" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">プレイ環境</label>
-        <div class="col-sm-10">
-          <%= f.text_area :content3, :class => "form-control" %>
-        </div>
-      </div>
-      
-      <div class="form-group row">
-        <label for="inputContent4" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">好きな楽曲・譜面</label>
-        <div class="col-sm-10">
-          <%= f.text_area :content4, :class => "form-control" %>
-        </div>
-      </div>
-        
-    </form>
   </div>
   
 </div>

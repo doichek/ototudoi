@@ -16,7 +16,7 @@
     </div>
     <% if current_user == @user %>
       <%= link_to "プロフィール編集", edit_profile_user_path, class: 'btn  btn-block btn-primary rounded-pill mt-2' %> 
-      <%= link_to "アカウント編集", edit_account_user_path, class: 'btn  btn-block btn-primary rounded-pill' %> 
+      <%= link_to "アカウント編集", edit_account_user_path, class: 'btn  btn-block btn-primary rounded-pill mb-2' %> 
     <% end %>
   </aside>
 
@@ -28,59 +28,77 @@
       <li class="nav-item"><a href="<%= followers_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followers_user_path(@user)) %>">フォロワー  <span class="badge badge-secondary"><%= @count_followers %></span></a></li>
     </ul>
     
-    <form style="font-size:15px;">
+    <table class="table table-striped table-bordered">
+      <tbody>
+
+      <tr>
+        <td colspan="2">自己紹介</td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= @user.content %></td>
+      </tr>
+
+
+      <tr>
+        <td>性別</td>
+        <td>年齢</td>
+      </tr>
+
+      <tr>
+        <td>    
+          <% if @user.sex == 1 %>
+            男性
+          <% elsif @user.sex == 2 %>
+            女性
+          <% else %>
+            非公開
+          <% end %>
+        </td>
+        <td>
+          <% if @user.age? %>
+            <%= @user.age %>
+          <% else %>
+            非公開
+          <% end %>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2">居住地</td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= @user.address %></td>
+      </tr>
       
-      <div class="form-group row">
-        <label for="staticContent" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">自己紹介</label>
-        <div class="col-sm-10">
-          <div style="white-space:pre-line"><%= @user.content %></div>
-        </div>
-      </div>
+      <tr>
+        <td colspan="2">プレイしている音ゲー</td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= @user.content2 %></td>
+      </tr>
       
-      <div class="form-group row">
-        <label for="staticSex" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">性別</label>
-        <div class="col-sm-10">
-          <div>
-            <% if @user.sex == 1 %>
-              男性
-            <% elsif @user.sex == 2 %>
-              女性
-            <% else %>
-              非公開
-            <% end %>
-          </div>
-        </div>
-      </div>
       
-      <div class="form-group row">
-        <label for="staticAddress" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">居住地</label>
-        <div class="col-sm-10">
-          <div style="white-space:pre-line"><%= @user.address %></div>
-        </div>
-      </div>
+      <tr>
+        <td colspan="2">プレイ環境</td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= @user.content3 %></td>
+      </tr>
       
-      <div class="form-group row">
-        <label for="staticContent2" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">プレイしている音ゲー</label>
-        <div class="col-sm-10">
-          <div style="white-space:pre-line"><%= @user.content2 %></div>
-        </div>
-      </div>
+      <tr>
+        <td colspan="2">好きな楽曲・譜面</td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= @user.content4 %></td>
+      </tr>
       
-      <div class="form-group row">
-        <label for="staticContent3" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">プレイ環境</label>
-        <div class="col-sm-10">
-           <div style="white-space:pre-line"><%= @user.content3 %></div>
-        </div>
-      </div>
-      
-      <div class="form-group row">
-        <label for="staticContent4" style="height:10%; text-align:center; font-weight:bold;" class="border-bottom col-sm-2 col-form-label">好きな楽曲・譜面</label>
-        <div class="col-sm-10">
-           <div style="white-space:pre-line"><%= @user.content4 %></div>
-        </div>
-      </div>
-      
-    </form>
+      </tbody>
+    </table>
+    
+    
+    
+    
+    
   </div>
   
 </div>

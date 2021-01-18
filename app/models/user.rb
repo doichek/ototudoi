@@ -6,6 +6,8 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_secure_password
   
+  validates :age, numericality: { only_integer: true, allow_nil: true }
+  
   #カラムの名前をmount_uploaderに指定
   mount_uploader :image, ImageUploader
   
