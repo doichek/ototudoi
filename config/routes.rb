@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
+  post 'login_guest', to: 'sessions#create_guest'
   delete 'logout', to: 'sessions#destroy'
-
   
   get 'signup', to: 'users#new'
   resources :users, only: [:index, :show, :new, :create, :edit, :update] do
@@ -30,12 +30,9 @@ Rails.application.routes.draw do
   resources :topics, only: [:index, :create, :destroy]do
     collection do
       get :search
-      # post :search#多分いらん
     end
   end
-  #get 'search', to: 'topics#search'
   
   resources :favorites, only: [:create, :destroy]
   
-  post 'guest_login', to: 'guest_sessions#create'
 end

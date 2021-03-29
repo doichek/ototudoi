@@ -84,7 +84,7 @@ class TopicsController < ApplicationController
     else
       @topics = Topic.order(id: :desc).page(params[:page])
       flash.now[:danger] = 'コミュニティの作成に失敗しました。'
-      render 'topics/index'
+      render 'topics/index&search'
     end
   end
 

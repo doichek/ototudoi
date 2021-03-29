@@ -14,7 +14,14 @@ class SessionsController < ApplicationController
       render :new
     end
   end
-
+  
+  def create_guest
+    user = User.find_by(email: 'guest@yahoo.co.jp')
+    session[:user_id] = user.id
+    flash[:success] = 'ゲストユーザーでログインしました'
+    redirect_to topics_url(user)
+  end
+  
   def destroy
     session[:user_id] = nil
     flash[:success] = 'ログアウトしました。'

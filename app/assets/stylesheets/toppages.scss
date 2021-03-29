@@ -10115,20 +10115,49 @@ header.masthead h1 {
 
 
 .bg-primary{
-  background-image: url("tablet.jpg");
-  background-size: cover;
+  background-image: 
+    url("tablet.jpg"),
+    url("gamecenter.jpg");
+  // background-size: cover;
   position: relative;
+  
+  background-position:
+    /* 1枚目の背景画像の表示位置 */
+    left 0px center,
+    /* 2枚目の背景画像の表示位置 */
+    right 0px center;
+    
+  background-repeat:
+    /* 1枚目の背景画像の設定 */
+    no-repeat,
+    /* 2枚目の背景画像の設定 */
+    no-repeat;
+
+  background-size:
+    /* 1、2枚目の背景画像の共通サイズ */
+    550px 480px;
  
-  @media (max-width:670px) {
-     background-size: contain;
-  }
-  // height: 0;
-  /* 表示画像の高さ(720) ÷ 表示画像の幅(1280) × 100 */
-  // padding-top: 56.25%;
+   @media (max-width:670px) {
+    background-position:
+    /* 1枚目の背景画像の表示位置 */
+    top 0px center,
+    /* 2枚目の背景画像の表示位置 */
+    bottom 0px center;
+    
+    background-size:
+    /* 1、2枚目の背景画像の共通サイズ */
+    400px auto;
+    
+    height:
+    700px;
+   }
+
+  
+
 }
 
 .bg-primary::before {
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.6);
   position: absolute;
   content:' ';
   top:0;
@@ -10141,44 +10170,44 @@ header.masthead h1 {
   color: rgba(255,255,255,0.75)!important;
 }
 
-#services{
-  background-image: url("gamecenter.jpg");
-  background-size: cover;
-  position: relative;
-  @media (max-width:670px) {
-     background-size: contain;
-  }
-}
+// #services{
+  // background-image: url("gamecenter.jpg");
+  // background-size: cover;
+  // position: relative;
+  // @media (max-width:670px) {
+  //   background-size: contain;
+  // }
+// }
 
-#services::before {
-  background-color: rgba(0,0,0,0.5);
-  position: absolute;
-  content:' ';
-  top:0;
-  right:0;
-  left:0;
-  bottom:0;
-}
+// #services::before {
+//   background-color: rgba(0,0,0,0.5);
+//   position: absolute;
+//   content:' ';
+//   top:0;
+//   right:0;
+//   left:0;
+//   bottom:0;
+// }
 
-#services{
-  color:white !important;
-}
+// #services{
+//   color:white !important;
+// }
 
-#services h2{
-  position: absolute;
-  top:90px;
-  right:0;
-  left:0;
-  bottom:0;
-}
+// #services h2{
+//   position: absolute;
+//   top:90px;
+//   right:0;
+//   left:0;
+//   bottom:0;
+// }
 
-#services hr{
-  position: absolute;
-  top:140px;
-  right:0;
-  left:0;
-  bottom:60px;
-}
+// #services hr{
+//   position: absolute;
+//   top:140px;
+//   right:0;
+//   left:0;
+//   bottom:60px;
+// }
 
 #services .row{
   margin-top:60px;
