@@ -24,7 +24,7 @@
   </head>
   
   <!--ログイン前のトップページにアクセスする場合とそれ以外の場合-->
-  <% if "https://67ad076fa29a461da79cf5a14ef43718.vfs.cloud9.us-east-1.amazonaws.com/" == request.url %>
+  <% if ("https://67ad076fa29a461da79cf5a14ef43718.vfs.cloud9.us-east-1.amazonaws.com/" == request.url) or ("https://ototudoi.herokuapp.com/" = == request.url) %>
     <%= yield %>
   <% else %>  
     <body>
