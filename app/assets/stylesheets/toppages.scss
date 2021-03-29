@@ -10135,7 +10135,8 @@ header.masthead h1 {
 
   background-size:
     /* 1、2枚目の背景画像の共通サイズ */
-    550px 480px;
+    // 550px 480px;
+    50% auto;
  
    @media (max-width:670px) {
     background-position:
