@@ -1,3 +1,4 @@
+<h1 class="mb-4 pt-3 subtitle"><%= @user.name %>のページ</h1>
 <div class="row">
   <div class="col-sm-4">
     
@@ -45,8 +46,7 @@
       <li class="nav-item"><a href="<%= followers_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followers_user_path(@user)) %>">フォロワー<span class="badge badge-secondary"><%= @count_followers %></span></a></li>
     </ul>
     
-    <h1 class="subtitle"><%= @topic.title %></h1>
-    <p>※コミュニティ一覧には表示されない独自のコミュニティです。</p>
+    <p>※コミュニティ一覧には表示されない<%= @user.name %>独自のコミュニティです。</p>
 
 <!--スマホの場合のみ表示-->
     <aside class="p-3 waku3 form-group SF" style="display:none;">

@@ -14,7 +14,8 @@
  *= require_self
  */
 
-//footerを最下部に固定する処理
+
+
 body {
     margin: 0;
     display: flex;
@@ -26,9 +27,17 @@ body {
     flex: 1;
 }
 
+.background-pattern{
+    background-image: url("ototudoi-pattern");
+}
 
+.main-container{
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
 
 // 共通
+
 .nav{
     font-size: 12px;
 }
@@ -159,8 +168,8 @@ body {
     background-color: #f4f4f4;
     color: #033;
     left: 44px;
-    top: -12px;
-    font-size:15px;
+    top: -15px;
+    font-size:20px;
 }
 // 以上
 
@@ -189,8 +198,8 @@ body {
     background-color: #f4f4f4;
     color: #033;
     left: 40px;
-    top: -12px;
-    font-size:15px;
+    top: -14px;
+    font-size:20px;
 }
 // 以上
 
@@ -220,8 +229,8 @@ body {
     background-color: #f4f4f4;
     color: #033;
     left: 40px;
-    top: -12px;
-    font-size:15px;
+    top: -14px;
+    font-size:20px;
 }
 // 以上
 
@@ -250,8 +259,8 @@ body {
     background-color: #f4f4f4;
     color: #033;
     left: 40px;
-    top: -12px;
-    font-size:15px;
+    top: -14px;
+    font-size:20px;
 }
 // 以上
 

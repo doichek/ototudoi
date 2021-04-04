@@ -27,14 +27,14 @@
   <% if ("https://67ad076fa29a461da79cf5a14ef43718.vfs.cloud9.us-east-1.amazonaws.com/" == request.url) or ("https://ototudoi.herokuapp.com/" == request.url) %>
     <%= yield %>
   <% else %>  
-    <body>
+    <body class="background-pattern">
       <%= render 'layouts/navbar' %>
-      <div class="container">
+      <div class="container bg-white pt-5">
         <%= render 'layouts/flash_messages' %>
         <%= yield %>
       </div>
-      <footer class="bg-light py-5 mt-4">
-        <div class="container"><div class="small text-center text-muted">Copyright © 2020 - ototudoi</div></div>
+      <footer class="bg-secondary py-3">
+        <div class="container"><div class="small text-center text-light">Copyright © 2021 - ototudoi</div></div>
       </footer>
     </body>
   <% end %>
