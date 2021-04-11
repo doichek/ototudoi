@@ -10082,6 +10082,20 @@ hr.light {
   }
 }
 
+
+// .top__video{
+// position: fixed;
+// right: 0;
+// bottom: 0;
+// min-width: 100%;
+// min-height: 100%;
+// width: auto;
+// height: auto;
+// z-index: -100;
+// // background: url('poster.jpg') no-repeat;
+// background-size: cover;
+// }
+
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);
@@ -10097,16 +10111,16 @@ header.masthead {
 }
 
 
-//追加
- header.masthead::before {
-   background-color: rgba(0,0,0,0.5);
-   position: absolute;
-   content:' ';
-   top:0;
-   right:0;
-   left:0;
-   bottom:0;
- }
+// 追加
+header.masthead::before {
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  content:' ';
+  top:0;
+  right:0;
+  left:0;
+  bottom:0;
+}
 
 
 header.masthead h1 {
@@ -10272,3 +10286,8 @@ header.masthead h1 {
 .text-white-75 {
   color: rgba(255, 255, 255, 0.75);
 }
+
+    .animated {
+      /* 最初から非表示 */
+      opacity: 0;
+    }
